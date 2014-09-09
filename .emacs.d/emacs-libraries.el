@@ -1,0 +1,110 @@
+;;; .emacs-libraries.el --- Emacs included libraries
+
+
+;; Color themes
+(require 'emacs-color-themes)
+(load-theme 'miloss t)
+
+;; Sr-Speedbar
+(require 'sr-speedbar)
+(global-set-key (kbd "s-s") 'sr-speedbar-toggle)
+(speedbar-add-supported-extension ".hs")
+
+;; SmartTabs mode
+(require 'smart-tabs-mode)
+(smart-tabs-mode-enable)
+
+;; Auto-complete.el
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete/ac-dict")
+(ac-config-default)
+
+;; Ido mode
+(require 'ido)
+(ido-mode t)
+(setq ido-ignore-buffers 
+	'("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer"))
+
+;; ffip
+(require 'find-file-in-project)
+(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|java\\|xml\\|sql\\)")
+(setq ffip-find-options 
+	"-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+
+;; PHP mode
+(autoload 'php-mode "php-mode" nil t)
+;(autoload 'php-mode "php-mode-improved" nil t)
+(add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . php-mode))
+
+;; Load the php-imenu index function
+(autoload 'php-imenu-create-index "php-imenu" nil t)
+;; Add the index creation function to the php-mode-hook
+(add-hook 'php-mode-hook 'php-imenu-setup)
+(defun php-imenu-setup ()
+	(setq imenu-create-index-function (function php-imenu-create-index))
+	;; uncomment if you prefer speedbar:
+	(setq php-imenu-alist-postprocessor (function reverse))
+	(imenu-add-menubar-index))
+
+;; Fixing array indendation in php-mode
+(add-hook 'php-mode-hook (lambda ()
+	(defun ywb-php-lineup-arglist-intro (langelem)
+		(save-excursion
+			(goto-char (cdr langelem))
+			(vector (+ (current-column) c-basic-offset))))
+	(defun ywb-php-lineup-arglist-close (langelem)
+		(save-excursion
+			(goto-char (cdr langelem))
+			(vector (current-column))))
+	(c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
+	(c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
+
+
+;; JavaScript mode
+(autoload 'js2-mode "js2-mode" nil t)
+(autoload 'javascript-mode "javascript" nil t)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.eml\\'" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\'" . nxml-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . nxml-mode))
+(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
+(smart-tabs-advice js2-indent-line js2-basic-offset)
+
+;; JavaScript console
+;(require 'js-comint)
+;;; Use node as our repl
+;(setq inferior-js-program-command "node")
+;(setq inferior-js-mode-hook
+;	(lambda ()
+;		;; We like nice colors
+;		(ansi-color-for-comint-mode-on)
+;		;; Deal with some prompt nonsense
+;		(add-to-list 'comint-preoutput-filter-functions
+;			(lambda (output)
+;				(replace-regexp-in-string ".*1G\.\.\..*5G" "..."
+;					(replace-regexp-in-string ".*1G.*3G" "&gt;" output))))))
+
+
+;; Haskell mode
+(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
+(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+
+
+;; Web-mode
+(autoload 'web-mode "web-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
+
+;; SQL indentation
+(eval-after-load "sql" '(load-library "sql-indent"))
+
+;; Magit
+;(add-to-list 'load-path "~/github/path/to/git-modes")
+;(add-to-list 'load-path "~/github/path/to/magit")
+;(eval-after-load 'info
+;	'(progn (info-initialize)
+;					(add-to-list 'Info-directory-list "~/github/path/to/magit")))
+;(require 'magit)

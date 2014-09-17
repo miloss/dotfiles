@@ -33,7 +33,6 @@
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)
-;(autoload 'php-mode "php-mode-improved" nil t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . php-mode))
 

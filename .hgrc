@@ -1,3 +1,5 @@
+[ui]
+ignore = ~/.hgignore
 [extensions]
 color =
 [color]

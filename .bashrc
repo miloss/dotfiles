@@ -5,6 +5,9 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 # Fun stuff here
 #. /path/to/.bash.d/fun-stuff.sh
 
+# PS1 prompt colors
+PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\] '
+
 # Powerline
 function _update_ps1() {
   export PS1="$(~/bin/powerline.py $? 2> /dev/null)"

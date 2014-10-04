@@ -28,8 +28,10 @@
 ;; ffip
 (require 'find-file-in-project)
 (setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|java\\|xml\\|sql\\)")
-(setq ffip-find-options 
-	"-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+; Mac OS X workaround
+;(setq ffip-regexp ".*.[jscsstplphpelphtmljsoninihtml]$")
+;(setq ffip-find-options "")
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)

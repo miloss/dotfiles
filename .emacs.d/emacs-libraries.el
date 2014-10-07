@@ -1,6 +1,5 @@
 ;;; .emacs-libraries.el --- Emacs included libraries
 
-
 ;; Color themes
 (require 'emacs-color-themes)
 (load-theme 'miloss t)

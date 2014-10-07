@@ -1,4 +1,4 @@
-;;; .emacs-libraries.el --- Emacs keyboard bindings
+;;; .emacs-keyboard.el --- Emacs keyboard bindings
 ;; @see Bozidar Batsov's emacs-bindings.el
 
 (global-set-key [C-tab] 'next-buffer)

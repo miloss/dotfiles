@@ -1,22 +1,11 @@
 ;;; .emacs-keyboard.el --- Emacs keyboard bindings
-;; @see Bozidar Batsov's emacs-bindings.el
+;; Also, @see Bozidar Batsov's emacs-bindings.el
 
 (global-set-key [C-tab] 'next-buffer)
 (global-set-key [C-S-iso-lefttab] 'previous-buffer)
 (global-set-key [f5] 'desktop-change-dir)
 (global-set-key [f6] 'session-save)
 (global-set-key [f8] 'ffip-filelist-clear)
-
-(global-set-key (kbd "s-S")
-  (lambda()(interactive)(switch-to-buffer "*shell*")))
-(global-set-key (kbd "s-E")
-  (lambda()(interactive)(find-file "~/.emacs")))
-(global-set-key (kbd "s-D")
-  (lambda()(interactive)(find-file "~/.emacs.d/emacs-desktops.el")))
-(global-set-key (kbd "s-F")
-  (lambda()(interactive)(find-file "~/.emacs.d/emacs-functions.el")))
-(global-set-key (kbd "s-K")
-  (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
 
 (global-set-key (kbd "s-1") 'delete-other-windows)
 (global-set-key (kbd "s-3") 'split-window-horizontally)
@@ -36,12 +25,31 @@
 (global-set-key (kbd "C-x w") 'toggle-truncate-lines)
 (global-set-key (kbd "C-x g") 'goto-line)
 (global-set-key (kbd "C-x t") 'find-file-in-project)
-(global-set-key (kbd "C-x d") 'desktop-change-dir)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+
+(global-set-key (kbd "C-z") 'shell)
 (global-set-key (kbd "C-x M-s") 'shell)
-(global-set-key (kbd "C-x M-d") 'remove-dos-eol)
+;(global-set-key (kbd "C-x M-z") 'suspend-frame)
+
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)
+
+(global-set-key (kbd "C-x f") 'recentf-ido-find-file)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 (global-set-key (kbd "C-M-f") 'query-replace)
 
-(global-unset-key (kbd "C-z"))
+
+;; Shortcuts to files
+(global-set-key (kbd "s-S")
+  (lambda()(interactive)(switch-to-buffer "*shell*")))
+(global-set-key (kbd "s-E")
+  (lambda()(interactive)(find-file "~/.emacs")))
+(global-set-key (kbd "s-F")
+  (lambda()(interactive)(find-file "~/.emacs.d/emacs-functions.el")))
+(global-set-key (kbd "s-L")
+  (lambda()(interactive)(find-file "~/.emacs.d/emacs-libraries.el")))
+(global-set-key (kbd "s-K")
+  (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
+
+; Cancel suspend
+; (global-unset-key (kbd "C-z"))

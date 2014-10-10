@@ -77,17 +77,22 @@
 ;(setq inferior-js-program-command "node")
 ;(setenv "NODE_NO_READLINE" "1")
 
-
 ;; Haskell mode
 (load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
-
 ;; Web-mode
 (autoload 'web-mode "web-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
+
+; maxframe
+(require 'maxframe)
+(add-hook 'window-setup-hook 'maximize-frame t)
+
+; idomenu
+(autoload 'idomenu "idomenu" nil t)
 
 ;; SQL indentation
 (eval-after-load "sql" '(load-library "sql-indent"))

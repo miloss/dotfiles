@@ -1,5 +1,5 @@
 ;;; .emacs-keyboard.el --- Emacs keyboard bindings
-;; Also, @see Bozidar Batsov's emacs-bindings.el
+;; Also, see Bozidar Batsov's emacs-bindings.el
 
 (global-set-key [C-tab] 'next-buffer)
 (global-set-key [C-S-iso-lefttab] 'previous-buffer)
@@ -27,6 +27,8 @@
 (global-set-key (kbd "C-x t") 'find-file-in-project)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 
+(global-set-key (kbd "M-p") 'sr-speedbar-toggle)
+
 (global-set-key (kbd "C-z") 'shell)
 (global-set-key (kbd "C-x M-s") 'shell)
 ;(global-set-key (kbd "C-x M-z") 'suspend-frame)
@@ -38,17 +40,18 @@
 
 (global-set-key (kbd "C-M-f") 'query-replace)
 
+(global-set-key (kbd "C-x C-i") 'idomenu)
 
 ;; Shortcuts to files
-(global-set-key (kbd "s-S")
+(global-set-key (kbd "C-M-e")
   (lambda()(interactive)(switch-to-buffer "*shell*")))
-(global-set-key (kbd "s-E")
+(global-set-key (kbd "C-M-e")
   (lambda()(interactive)(find-file "~/.emacs")))
-(global-set-key (kbd "s-F")
+(global-set-key (kbd "C-M-f")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-functions.el")))
-(global-set-key (kbd "s-L")
+(global-set-key (kbd "C-M-l")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-libraries.el")))
-(global-set-key (kbd "s-K")
+(global-set-key (kbd "C-M-k")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
 
 ; Cancel suspend

@@ -9,16 +9,19 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \$\[\033[00m\] '
 
 # Powerline
-function _update_ps1() {
-  export PS1="$(~/bin/powerline.py $? 2> /dev/null)"
-}
-export PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+#function _update_ps1() {
+#  export PS1="$(~/bin/powerline.py $? 2> /dev/null)"
+#}
+#export PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 
-
-# General short aliases
-alias ls='ls --color=auto'
-alias ll='ls -l'
+# Aliases
+alias ls='ls -G'
+alias la='ls -la'
 alias lt='ls -ltr'
+
+alias na='gnome-open .'
+alias em='emacs'
+alias h='hg'
 
 # GIT aliases
 alias g='git'

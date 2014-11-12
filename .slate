@@ -6,16 +6,18 @@ config resizePercentOf screenSize
 alias mon-22inch 1920x1080
 
 # Position Aliases
-alias 1-chat    move screenOriginX+6*screenSizeX/10;screenOriginY               3*screenSizeX/10;8*screenSizeY/10
-alias 1-main    move screenOriginX;screenOriginY                                screenSizeX;screenSizeY
-alias 1-term    move screenOriginX;screenOriginY                                4*screenSizeX/10;6*screenSizeY/10
-alias 1-editor  move screenOriginX+4*screenSizeX/10;screenOriginY               6*screenSizeX/10;screenSizeY
+alias 1-chat         move screenOriginX+6*screenSizeX/10;screenOriginY               3*screenSizeX/10;8*screenSizeY/10
+alias 1-main         move screenOriginX;screenOriginY                                screenSizeX;screenSizeY
+alias 1-secondary    move screenOriginX+1*screenSizeX/10;screenOriginY               8*screenSizeX/10;9*screenSizeY/10
+alias 1-term         move screenOriginX;screenOriginY                                4*screenSizeX/10;6*screenSizeY/10
+alias 1-editor       move screenOriginX+4*screenSizeX/10;screenOriginY               6*screenSizeX/10;screenSizeY
 
 # Layout
-layout 1monitor 'iTerm':SORT_TITLE      ${1-term}
-layout 1monitor 'Emacs':SORT_TITLE      ${1-editor}
-layout 1monitor 'Firefox':SORT_TITLE    ${1-main}
-layout 1monitor 'Skype':SORT_TITLE      ${1-chat}
+layout 1monitor 'iTerm':SORT_TITLE              ${1-term}
+layout 1monitor 'Emacs':SORT_TITLE              ${1-editor}
+layout 1monitor 'Firefox':SORT_TITLE            ${1-main}
+layout 1monitor 'Skype':SORT_TITLE              ${1-chat}
+layout 1monitor 'Google Chrome':SORT_TITLE      ${1-secondary}
 
 
 ## Bindings

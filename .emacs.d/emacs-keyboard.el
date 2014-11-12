@@ -28,9 +28,9 @@
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
+(global-set-key (kbd "M-o") 'other-window)
 
-(global-set-key (kbd "C-z") 'shell)
-(global-set-key (kbd "C-x M-s") 'shell)
+(global-set-key (kbd "C-z") 'eshell)
 ;(global-set-key (kbd "C-x M-z") 'suspend-frame)
 
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)
@@ -43,8 +43,6 @@
 (global-set-key (kbd "C-x C-i") 'idomenu)
 
 ;; Shortcuts to files
-(global-set-key (kbd "C-M-e")
-  (lambda()(interactive)(switch-to-buffer "*shell*")))
 (global-set-key (kbd "C-M-e")
   (lambda()(interactive)(find-file "~/.emacs")))
 (global-set-key (kbd "C-M-f")

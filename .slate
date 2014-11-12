@@ -41,7 +41,7 @@ bind 1:ctrl;alt;cmd       layout 1monitor
 bind pageUp:alt;cmd ${1-main}
 bind right:alt;cmd  push right   bar-resize:6*screenSizeX/10
 bind left:alt;cmd   push left    bar-resize:4*screenSizeX/10
-bind up:alt;cmd     push up      bar-resize:2*screenSizeY/3
-bind down:alt;cmd   push down    bar-resize:screenSizeY/3
+bind up:alt;cmd     ${1-main}
+bind down:alt;cmd   ${1-secondary}
 
 default 1monitor count:1

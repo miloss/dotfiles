@@ -87,10 +87,6 @@
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 
-; maxframe
-(require 'maxframe)
-(add-hook 'window-setup-hook 'maximize-frame t)
-
 ; idomenu
 (autoload 'idomenu "idomenu" nil t)
 

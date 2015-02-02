@@ -2,6 +2,7 @@
 ;; Also, see Bozidar Batsov's emacs-bindings.el
 
 (global-set-key [C-tab] 'next-buffer)
+(global-set-key [C-S-tab] 'previous-buffer)
 (global-set-key [C-S-iso-lefttab] 'previous-buffer)
 (global-set-key [f5] 'desktop-change-dir)
 (global-set-key [f6] 'session-save)
@@ -31,6 +32,7 @@
 (global-set-key (kbd "M-o") 'other-window)
 
 (global-set-key (kbd "C-z") 'eshell)
+(global-set-key (kbd "C-x M-s") 'shell)
 ;(global-set-key (kbd "C-x M-z") 'suspend-frame)
 
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)
@@ -42,6 +44,12 @@
 
 (global-set-key (kbd "C-x C-i") 'idomenu)
 
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
 ;; Shortcuts to files
 (global-set-key (kbd "C-M-e")
   (lambda()(interactive)(find-file "~/.emacs")))
@@ -51,6 +59,3 @@
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-libraries.el")))
 (global-set-key (kbd "C-M-k")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
-
-; Cancel suspend
-; (global-unset-key (kbd "C-z"))

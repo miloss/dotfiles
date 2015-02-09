@@ -42,7 +42,7 @@
 (setq lazy-highlight-cleanup nil)
 (setq ring-bell-function 'ignore)
 
-(set-default-font "Monospace 10")
+(set-default-font "Monaco 12")
 ;(setq next-line-add-newlines nil)
 (setq scroll-preserve-screen-position t)
 (setq x-select-enable-clipboard t)
@@ -52,6 +52,15 @@
 (setq frame-title-format '("" "%f (%m) - Emacs " emacs-version))
 ;(setq default-frame-alist	'((width . 120) (height . 57)))
 (set-frame-parameter (selected-frame) 'alpha '(96 96))
+
+(setq
+  backup-by-copying t
+  backup-directory-alist
+  '(("." . "~/.emacs.backups"))
+  delete-old-versions t
+  kept-new-versions 6
+  kept-old-versions 2
+  version-control t)
 
 ;; Tab size
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52))
@@ -72,6 +81,6 @@
 ;; Predefined desktops
 (global-set-key (kbd "C-x <f1>")
 	(lambda()(interactive)
-		(desktop-change-message "~/www/emsys-kc/webclient")))
+		(desktop-change-message "/path/to/desktop")))
 
 ;;; .emacs ends here

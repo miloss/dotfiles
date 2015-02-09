@@ -6,6 +6,7 @@
 (global-set-key [C-S-iso-lefttab] 'previous-buffer)
 (global-set-key [f5] 'desktop-change-dir)
 (global-set-key [f6] 'session-save)
+(global-set-key [f7] 'desktop-clear-lock)
 (global-set-key [f8] 'ffip-filelist-clear)
 
 (global-set-key (kbd "s-1") 'delete-other-windows)
@@ -30,6 +31,8 @@
 
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-x M-2") 'split-window-above)
+(global-set-key (kbd "C-x M-3") 'split-window-left)
 
 (global-set-key (kbd "C-z") 'eshell)
 (global-set-key (kbd "C-x M-s") 'shell)
@@ -39,10 +42,9 @@
 
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-x C-i") 'idomenu)
 
 (global-set-key (kbd "C-M-f") 'query-replace)
-
-(global-set-key (kbd "C-x C-i") 'idomenu)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)

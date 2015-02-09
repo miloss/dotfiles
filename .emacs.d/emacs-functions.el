@@ -43,22 +43,29 @@ emacs-how-to-delete-text-without-kill-ring"
 	(desktop-save-in-desktop-dir))
 
 
+;;; Windows
+
+(defun split-window-left ()
+  "Split the current window vertically 38/62 and moves to the right one."
+  (interactive)
+  (let ((proportion (* 36 0.01)))
+    (split-window-right (round (* proportion (window-width))))
+    (other-window -1)))
+
+(defun split-window-above ()
+  "Split the current window horizontally and moves to the top one."
+  (interactive)
+  (let ((proportion (* 62 0.01)))
+    (split-window-below (round (* proportion (window-height))))))
+
+
 ;;; Desktop mode functions
 
-;;TODO
-(defun desktop-defined-desktops ()
-	"List of defined desktop locations.")
-;;TODO
-(defun desktop-change ()
-	"Changes current desktop to directory."
+(defun desktop-clear-lock ()
+	"Clear .emacs.desktop.lock file from current loaded desktop."
 	(interactive)
-	(let* ((ddesktops (desktop-defined-desktops))
-		(file (if (functionp 'ido-completing-read)
-			(ido-completing-read "Find desktop: "
-				(mapcar 'car ddesktops))
-			(completing-read "Find desktop: "
-				(mapcar 'car ddesktops)))))
-		(find-file (cdr (assoc file ddesktops)))))
+	(shell-command (concat "rm " desktop-dirname "/.emacs.desktop.lock"))
+	(message "Desktop lock cleared"))
 
 (defun desktop-change-message (dname)
 	"Changes desktop and display message about it."

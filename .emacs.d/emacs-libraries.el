@@ -10,8 +10,8 @@
 (speedbar-add-supported-extension ".hs")
 
 ;; SmartTabs mode
-(require 'smart-tabs-mode)
-(smart-tabs-mode-enable)
+;(require 'smart-tabs-mode)
+;(smart-tabs-mode-enable)
 
 ;; Auto-complete.el
 (require 'auto-complete-config)
@@ -92,6 +92,9 @@
 
 ;; SQL indentation
 (eval-after-load "sql" '(load-library "sql-indent"))
+
+;; REST client mode
+;(require 'restclient)
 
 ;; Magit
 ;(add-to-list 'load-path "~/github/path/to/git-modes")

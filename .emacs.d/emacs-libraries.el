@@ -6,7 +6,7 @@
 
 ;; Sr-Speedbar
 (require 'sr-speedbar)
-(global-set-key (kbd "s-s") 'sr-speedbar-toggle)
+(global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (speedbar-add-supported-extension ".hs")
 
 ;; SmartTabs mode
@@ -63,14 +63,15 @@
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
-(autoload 'javascript-mode "javascript" nil t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
-(add-to-list 'auto-mode-alist '("\\.eml\\'" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\'" . nxml-mode))
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . nxml-mode))
 (add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
 (smart-tabs-advice js2-indent-line js2-basic-offset)
+
+;; Web-mode
+(autoload 'web-mode "web-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 
 ;; JavaScript console
 ;(require 'js-comint)
@@ -81,11 +82,6 @@
 (load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-
-;; Web-mode
-(autoload 'web-mode "web-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 
 ; idomenu
 (autoload 'idomenu "idomenu" nil t)

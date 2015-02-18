@@ -11,7 +11,6 @@ emacs-how-to-delete-text-without-kill-ring"
   (kill-line 1)
   (setq kill-ring (cdr kill-ring)))
 
-
 (defun popout-directory ()
 	"Pops up a new OS window in current directory."
 	(interactive)
@@ -72,13 +71,6 @@ emacs-how-to-delete-text-without-kill-ring"
 	(desktop-change-dir dname)
 	(message (concat "Desktop read from " dname)))
 
-
-;; Hide mixed UNIX and DOS line endings
-(defun remove-dos-eol ()
-	"Do not show ^M in files containing mixed UNIX and DOS line endings."
-  (interactive)
-	(setq buffer-display-table (make-display-table))
-	(aset buffer-display-table ?\^M []))
 
 (defun load-emacs-file ()
 	"Just reloads Emacs init file."

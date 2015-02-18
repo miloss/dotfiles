@@ -52,6 +52,7 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+
 ;; Shortcuts to files
 (global-set-key (kbd "C-M-e")
   (lambda()(interactive)(find-file "~/.emacs")))
@@ -61,3 +62,8 @@
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-libraries.el")))
 (global-set-key (kbd "C-M-k")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
+
+;; Predefined desktops
+(global-set-key (kbd "C-x <f1>")
+	(lambda()(interactive)
+		(desktop-change-message "/path/to/desktop")))

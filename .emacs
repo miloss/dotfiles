@@ -65,7 +65,7 @@
 ;; Tab size
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52))
 (setq-default tab-width 4)
-;(setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30 32 34 36 38 40 42 44 46 48))
+;(setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30))
 ;(setq-default tab-width 2)
 
 ;; Spaces instead of tabs
@@ -77,10 +77,5 @@
 (load-file "~/.emacs.d/emacs-functions.el")
 (load-file "~/.emacs.d/emacs-libraries.el")
 (load-file "~/.emacs.d/emacs-keyboard.el")
-
-;; Predefined desktops
-(global-set-key (kbd "C-x <f1>")
-	(lambda()(interactive)
-		(desktop-change-message "/path/to/desktop")))
 
 ;;; .emacs ends here

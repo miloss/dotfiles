@@ -6,11 +6,11 @@ config resizePercentOf screenSize
 alias mon-22inch 1920x1080
 
 # Position Aliases
-alias 1-chat         move screenOriginX+6*screenSizeX/10;screenOriginY               3*screenSizeX/10;8*screenSizeY/10
 alias 1-main         move screenOriginX;screenOriginY                                screenSizeX;screenSizeY
-alias 1-secondary    move screenOriginX+1*screenSizeX/10;screenOriginY               8*screenSizeX/10;9*screenSizeY/10
-alias 1-term         move screenOriginX;screenOriginY                                4*screenSizeX/10;6*screenSizeY/10
+alias 1-secondary    move screenOriginX+1*screenSizeX/10;screenOriginY               8*screenSizeX/10;8*screenSizeY/10
+alias 1-term         move screenOriginX+15*screenSizeX/100;screenOriginY             7*screenSizeX/10;6*screenSizeY/10
 alias 1-editor       move screenOriginX+4*screenSizeX/10;screenOriginY               6*screenSizeX/10;screenSizeY
+alias 1-chat         move screenOriginX+6*screenSizeX/10;screenOriginY               3*screenSizeX/10;8*screenSizeY/10
 
 # Layout
 layout 1monitor 'iTerm':SORT_TITLE              ${1-term}
@@ -39,8 +39,8 @@ bind 1:ctrl;alt;cmd       layout 1monitor
 
 # Move
 bind pageUp:alt;cmd ${1-main}
-bind right:alt;cmd  push right   bar-resize:6*screenSizeX/10
-bind left:alt;cmd   push left    bar-resize:4*screenSizeX/10
+#bind right:alt;cmd  push right   bar-resize:6*screenSizeX/10
+bind left:alt;cmd   ${1-term}
 bind up:alt;cmd     ${1-main}
 bind down:alt;cmd   ${1-secondary}
 

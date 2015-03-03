@@ -26,11 +26,14 @@
 
 ;; ffip
 (require 'find-file-in-project)
-(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|java\\|xml\\|sql\\)")
-(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+;(setq ffip-find-primary "")
+;(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\)")
+;(setq ffip-find-options
+;	"-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
 ; Mac OS X workaround
-;(setq ffip-regexp ".*.[jscsstplphpelphtmljsoninihtml]$")
-;(setq ffip-find-options "")
+(setq ffip-find-primary "-E")
+(setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
+(setq ffip-find-options "")
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)
@@ -83,6 +86,12 @@
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
+;; Python mode
+(autoload 'python-mode "python-mode" "Python Mode." t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(define-coding-system-alias 'UTF-8 'utf-8)
+
 ; idomenu
 (autoload 'idomenu "idomenu" nil t)
 
@@ -91,11 +100,9 @@
 
 ;; REST client mode
 ;(require 'restclient)
+(autoload 'restclient-mode "restclient" nil t)
+(add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
-;; Magit
-;(add-to-list 'load-path "~/github/path/to/git-modes")
-;(add-to-list 'load-path "~/github/path/to/magit")
-;(eval-after-load 'info
-;	'(progn (info-initialize)
-;					(add-to-list 'Info-directory-list "~/github/path/to/magit")))
-;(require 'magit)
+;; multiple-cursors 
+(add-to-list 'load-path "~/.emacs.d/mc")
+(require 'multiple-cursors)

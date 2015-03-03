@@ -44,6 +44,8 @@
 ;; 2013-04-24
 ;; Saving 'find' results to a file.
 ;; Deleting cached file saved above.
+;; 2015-02-27
+;; Added `ffip-find-primary' variable option
 
 
 ;; By default, it looks only for files whose names match
@@ -81,7 +83,7 @@
 (defvar ffip-regexp
   (concat ".*\\.\\("
 	  (mapconcat (lambda (x) x)
-		     '("rb" "js" "css" "yml" "yaml" "rhtml" "erb" "html" "el") "\\|")
+		     '("rb" "js" "css" "yml" "yaml" "rhtml" "erb" "html" "el" "py") "\\|")
 	  "\\)")
   "Regexp of things to look for when using find-file-in-project.")
 
@@ -115,8 +117,7 @@ from `ffip-filelist-temp-file' file, if available."
 			(shell-command-to-string 
 			 (concat "cat " (ffip-filelist-temp-file)))
 		(shell-command-to-string 
-		 (concat "find " (or ffip-project-root
-												 (ffip-project-root))
+		 (concat "find " ffip-find-primary " " (ffip-project-root)
 						 " -type f -regex \""
 						 ffip-regexp
 						 "\" " ffip-find-options
@@ -168,5 +169,5 @@ setting the `ffip-project-root' variable."
   desktop-dirname)
 
 (provide 'find-file-in-project)
+(provide 'ffip-find)
 ;;; find-file-in-project.el ends here
-

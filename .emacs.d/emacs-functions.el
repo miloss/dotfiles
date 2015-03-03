@@ -57,6 +57,12 @@ emacs-how-to-delete-text-without-kill-ring"
   (let ((proportion (* 62 0.01)))
     (split-window-below (round (* proportion (window-height))))))
 
+(defun shell-in-left-window ()
+  "Split window and open shell in left part"
+  (interactive)
+  (split-window-left)
+  (other-window -1)
+  (shell))
 
 ;;; Desktop mode functions
 

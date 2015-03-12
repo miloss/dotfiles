@@ -2,10 +2,10 @@
 
 ;; Milos Popovic <the.elephant@gmail.com>
 
-(add-to-list 'load-path "~/.emacs.d/")
+(add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'default-frame-alist '(width . 93))
 
-(let ((default-directory "~/.emacs.d/"))
+(let ((default-directory "~/.emacs.d/lisp/"))
 	(normal-top-level-add-subdirs-to-load-path))
 
 ;; emacs customizations

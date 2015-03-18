@@ -33,10 +33,18 @@
   :group 'restclient
   :type 'string)
 
+(defcustom restclient-inhibit-cookies nil
+  "Inhibit restclient from sending cookies implicitly"
+  :group 'restclient
+  :type 'boolean)
+
 (defvar restclient-within-call nil)
 
 (defvar restclient-request-time-start nil)
 (defvar restclient-request-time-end nil)
+
+(defvar restclient-response-loaded-hook nil
+  "Hook run after response buffer created and data loaded.")
 
 ;; The following disables the interactive request for user name and
 ;; password should an API call encounter a permission-denied response.
@@ -93,14 +101,9 @@
     (url-retrieve url 'restclient-http-handle-response
                   (list method url (if restclient-same-buffer-response
                             restclient-same-buffer-response-name
-                          (format "*HTTP %s %s*" method url)) raw stay-in-window))))
+                          (format "*HTTP %s %s*" method url)) raw stay-in-window) nil restclient-inhibit-cookies)))
 
-(defvar restclient-content-type-regexp (concat
-		"^Content-[Tt]ype: "
-		"\\(\\w+\\)/"
-		"\\(?:[^\\+]*\\+\\)*"
-		"\\([^;]+\\)"
-		";[^\\n]+$"))
+(defvar restclient-content-type-regexp "^Content-[Tt]ype: \\(\\w+\\)/\\(?:[^\\+\r\n]*\\+\\)*\\([^;\r\n]+\\)")
 
 (defun restclient-prettify-response (method url)
   (save-excursion
@@ -121,8 +124,17 @@
                         ("image/gif" . image-mode)
                         ("text/html" . html-mode))))))
         (forward-line))
+      (while (looking-at "^\\s-*$")
+        (forward-line))
+      (unless guessed-mode
+        (setq guessed-mode
+              (assoc-default nil
+                             ;; magic mode matches
+                             '(("<\\?xml " . xml-mode)
+                               ("{\\s-*\"" . js-mode))
+                             (lambda (re _dummy)
+                               (looking-at re)))))
       (let ((headers (buffer-substring-no-properties start (point))))
-        (forward-line)
         (when guessed-mode
           (delete-region start (point))
           (unless (eq guessed-mode 'image-mode)
@@ -161,7 +173,7 @@
 (defun restclient-prettify-json-unicode ()
   (save-excursion
     (goto-char (point-min))
-    (while (re-search-forward "\\\\[Uu]\\([0-9a-fA-F]+\\)" nil t)
+    (while (re-search-forward "\\\\[Uu]\\([0-9a-fA-F]\\{4\\}+\\)" nil t)
       (replace-match (char-to-string (decode-char 'ucs (string-to-number (match-string 1) 16))) t nil))))
 
 (defun restclient-http-handle-response (status method url bufname raw stay-in-window)
@@ -180,6 +192,7 @@
         (unless raw
           (restclient-prettify-response method url))
         (buffer-enable-undo)
+        (run-hooks 'restclient-response-loaded-hook)
         (if stay-in-window
             (display-buffer (current-buffer) t)
           (switch-to-buffer-other-window (current-buffer)))))))

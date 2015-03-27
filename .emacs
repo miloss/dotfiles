@@ -23,8 +23,7 @@
  '(safe-local-variable-values (quote ((lexical-binding . t))))
  '(speedbar-show-unknown-files t)
 ; '(speedbar-use-images nil)
- '(sr-speedbar-width-console 36)
- '(sr-speedbar-width-x 36)
+ '(sr-speedbar-width 30)
  '(tool-bar-mode nil))
 
 (tool-bar-mode -1)

@@ -22,9 +22,10 @@
  '(js-indent-level 4)
  '(safe-local-variable-values (quote ((lexical-binding . t))))
  '(speedbar-show-unknown-files t)
-; '(speedbar-use-images nil)
+ '(speedbar-use-images t)
  '(sr-speedbar-width 30)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(js2-strict-missing-semi-warning nil))
 
 (tool-bar-mode -1)
 (menu-bar-mode 0)
@@ -48,8 +49,7 @@
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
-(setq frame-title-format '("" "%f (%m) - Emacs " emacs-version))
-;(setq default-frame-alist	'((width . 120) (height . 57)))
+(setq frame-title-format '("" "%f - Emacs " emacs-version))
 (set-frame-parameter (selected-frame) 'alpha '(96 96))
 
 (setq

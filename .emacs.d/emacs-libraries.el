@@ -30,6 +30,7 @@
 ;(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\)")
 ;(setq ffip-find-options
 ;	"-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+
 ; Mac OS X workaround
 (setq ffip-find-primary "-E")
 (setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
@@ -42,11 +43,11 @@
 
 ;; Load the php-imenu index function
 (autoload 'php-imenu-create-index "php-imenu" nil t)
+
 ;; Add the index creation function to the php-mode-hook
 (add-hook 'php-mode-hook 'php-imenu-setup)
 (defun php-imenu-setup ()
 	(setq imenu-create-index-function (function php-imenu-create-index))
-	;; uncomment if you prefer speedbar:
 	(setq php-imenu-alist-postprocessor (function reverse))
 	(imenu-add-menubar-index))
 
@@ -76,11 +77,6 @@
 (add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 
-;; JavaScript console
-;(require 'js-comint)
-;(setq inferior-js-program-command "node")
-;(setenv "NODE_NO_READLINE" "1")
-
 ;; Haskell mode
 (load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
@@ -106,3 +102,8 @@
 ;; multiple-cursors 
 (add-to-list 'load-path "~/.emacs.d/mc")
 (require 'multiple-cursors)
+
+;; Jade mode
+(require 'sws-mode)
+(autoload 'jade-mode "jade-mode" "Jade Mode" t)
+(add-to-list 'auto-mode-alist '("\\.jade\\'" . jade-mode))

@@ -34,17 +34,15 @@
 (global-set-key (kbd "C-x M-2") 'split-window-above)
 (global-set-key (kbd "C-x M-3") 'split-window-left)
 
-(global-set-key (kbd "C-z") 'eshell)
-(global-set-key (kbd "C-x M-s") 'shell)
-;(global-set-key (kbd "C-x M-z") 'suspend-frame)
+(global-set-key (kbd "C-z") 'shell)
 
+(global-set-key (kbd "C-x M-e") 'load-emacs-file)
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)
+(global-set-key (kbd "C-x M-d") 'delete-trailing-whitespace)
 
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-i") 'idomenu)
-
-(global-set-key (kbd "C-M-f") 'query-replace)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)

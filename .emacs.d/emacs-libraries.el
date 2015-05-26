@@ -83,7 +83,10 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
 ;; Python mode
-(autoload 'python-mode "python-mode" "Python Mode." t)
+(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
+(add-to-list 'load-path "~/.emacs.d/lisp/python-mode/")
+(setq py-install-directory "~/.emacs.d/lisp/python-mode/")
+(autoload 'python-mode "python-mode" "Python Mode" t)
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-to-list 'interpreter-mode-alist '("python" . python-mode))
 (define-coding-system-alias 'UTF-8 'utf-8)

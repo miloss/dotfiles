@@ -23,7 +23,8 @@
  '(safe-local-variable-values (quote ((lexical-binding . t))))
  '(speedbar-show-unknown-files t)
  '(speedbar-use-images t)
- '(sr-speedbar-width 30)
+ '(sr-speedbar-width 27)
+ '(sr-speedbar-width-console 24)
  '(tool-bar-mode nil)
  '(js2-strict-missing-semi-warning nil))
 

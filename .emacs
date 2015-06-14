@@ -30,7 +30,8 @@
 
 (tool-bar-mode -1)
 (menu-bar-mode 0)
-;(setq scroll-step 1)
+(when (not (display-graphic-p))
+      (setq scroll-step 1))
 ;(setq scroll-conservatively 10000)
 ;(setq scroll-preserve-screen-position 1)
 ;(setq auto-window-vscroll nil)

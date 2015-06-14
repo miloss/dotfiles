@@ -36,6 +36,7 @@
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-z") 'shell))
+
 (global-set-key (kbd "C-x M-e") 'load-emacs-file)
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)
 (global-set-key (kbd "C-x M-d") 'delete-trailing-whitespace)

@@ -98,7 +98,6 @@
 (eval-after-load "sql" '(load-library "sql-indent"))
 
 ;; REST client mode
-;(require 'restclient)
 (autoload 'restclient-mode "restclient" nil t)
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 

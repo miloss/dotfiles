@@ -1,6 +1,10 @@
 ;;; .emacs-functions.el --- Emacs various functions
 ;; by Milos Popovic <the.elephant@gmail.com>
 
+(defun switch-to-previous-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
 (defun ruthlessly-kill-line ()
   "Deletes a line, but does not put it in the kill-ring. (kinda)
 

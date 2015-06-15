@@ -42,7 +42,8 @@
 ;(toggle-truncate-lines)
 (setq-default truncate-lines t)
 (setq lazy-highlight-cleanup nil)
-(setq ring-bell-function 'ignore)
+(setq desktop-load-locked-desktop t)
+(setq-default indent-tabs-mode nil)
 
 (set-default-font "Monaco 12")
 ;(setq next-line-add-newlines nil)
@@ -51,7 +52,7 @@
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
-(setq frame-title-format '("" "%f - Emacs " emacs-version))
+(setq frame-title-format '("" "%f"))
 (set-frame-parameter (selected-frame) 'alpha '(96 96))
 
 (setq
@@ -74,9 +75,11 @@
 
 ;; Mac OS X
 (setq mac-command-modifier 'control)
+(setq ring-bell-function 'ignore)
 
 (load-file "~/.emacs.d/emacs-functions.el")
 (load-file "~/.emacs.d/emacs-libraries.el")
 (load-file "~/.emacs.d/emacs-keyboard.el")
 
+(cd "~")
 ;;; .emacs ends here

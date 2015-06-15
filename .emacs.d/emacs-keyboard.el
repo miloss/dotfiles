@@ -9,18 +9,16 @@
 (global-set-key [f7] 'desktop-clear-lock)
 (global-set-key [f8] 'ffip-filelist-clear)
 
-(global-set-key (kbd "s-1") 'delete-other-windows)
-(global-set-key (kbd "s-3") 'split-window-horizontally)
-(global-set-key (kbd "s-l") 'linum-mode)
-(global-set-key (kbd "s-b") 'ido-switch-buffer)
-(global-set-key (kbd "s-k") 'ido-kill-buffer)
-(global-set-key (kbd "s-t") 'find-file-in-project)
-(global-set-key (kbd "s-r") 'rgrep)
+; TODO: Deprecate all Super key shortcuts
+
+;(global-set-key (kbd "s-1") 'delete-other-windows)
+;(global-set-key (kbd "s-3") 'split-window-horizontally)
+;(global-set-key (kbd "s-l") 'linum-mode)
 (global-set-key (kbd "C-x M-r") 'rgrep)
-(global-set-key [s-left] 'windmove-left)
-(global-set-key [s-right] 'windmove-right)
-(global-set-key [s-up] 'windmove-up)
-(global-set-key [s-down] 'windmove-down)
+;(global-set-key [s-left] 'windmove-left)
+;(global-set-key [s-right] 'windmove-right)
+;(global-set-key [s-up] 'windmove-up)
+;(global-set-key [s-down] 'windmove-down)
 (global-set-key [M-up] 'popout-directory)
 
 (global-set-key (kbd "C-k") 'ruthlessly-kill-line)

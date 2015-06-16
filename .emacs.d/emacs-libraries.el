@@ -10,8 +10,8 @@
 (speedbar-add-supported-extension ".hs")
 
 ;; SmartTabs mode
-;(require 'smart-tabs-mode)
-;(smart-tabs-mode-enable)
+(require 'smart-tabs-mode)
+(smart-tabs-mode-enable)
 
 ;; Auto-complete.el
 (require 'auto-complete-config)
@@ -79,9 +79,9 @@
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 
 ;; Haskell mode
-(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
-(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
+;(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
 ;; Python mode
 (setq abbrev-file-name "~/.emacs.d/.abbrev_defs")

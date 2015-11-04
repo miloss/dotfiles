@@ -1,3 +1,5 @@
+## Custom .bashrc begin
+
 export PATH=$HOME/local/bin:$HOME/bin:$PATH
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
@@ -9,13 +11,13 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \$\[\033[00m\] '
 
 # Powerline
-#function _update_ps1() {
-#  export PS1="$(~/bin/powerline.py $? 2> /dev/null)"
-#}
-#export PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1
+#. /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 
 # Aliases
-alias ls='ls -G'
+alias ls='ls -G --color=auto'
 alias la='ls -la'
 alias lt='ls -ltr'
 
@@ -40,5 +42,5 @@ alias push='git push origin'
 alias showFiles='defaults write com.apple.Finder AppleShowAllFiles TRUE;\killall Finder'
 alias hideFiles='defaults write com.apple.Finder AppleShowAllFiles FALSE;\killall Finder'
 
-### Added by the Heroku Toolbelt
+# Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"

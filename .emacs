@@ -45,7 +45,7 @@
 (setq desktop-load-locked-desktop t)
 (setq-default indent-tabs-mode nil)
 
-(set-default-font "Monaco 12")
+;(set-default-font "Monaco 12") ;; Font not available on Ubuntu
 ;(setq next-line-add-newlines nil)
 (setq scroll-preserve-screen-position t)
 (setq x-select-enable-clipboard t)

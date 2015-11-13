@@ -42,3 +42,5 @@ alias hideFiles='defaults write com.apple.Finder AppleShowAllFiles FALSE;\killal
 
 # Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+alias apple='xmodmap .xmodmaprc'

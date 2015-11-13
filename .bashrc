@@ -1,5 +1,3 @@
-## Custom .bashrc begin
-
 export PATH=$HOME/local/bin:$HOME/bin:$PATH
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
@@ -11,9 +9,9 @@ export LSCOLORS=GxFxCxDxBxegedabagaced
 PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \$\[\033[00m\] '
 
 # Powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
+#powerline-daemon -q
+#POWERLINE_BASH_CONTINUATION=1
+#POWERLINE_BASH_SELECT=1
 #. /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
 
 # Aliases

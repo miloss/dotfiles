@@ -26,15 +26,14 @@
 
 ;; ffip
 (require 'find-file-in-project)
-;(setq ffip-find-primary "")
-;(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\)")
-;(setq ffip-find-options
-;	"-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+(setq ffip-find-primary "")
+(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\)")
+(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
 
 ; Mac OS X workaround
-(setq ffip-find-primary "-E")
-(setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
-(setq ffip-find-options "")
+;(setq ffip-find-primary "-E")
+;(setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
+;(setq ffip-find-options "")
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)
@@ -70,7 +69,7 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
 (add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
-(smart-tabs-advice js2-indent-line js2-basic-offset)
+;(smart-tabs-advice js2-indent-line js2-basic-offset)
 
 ;; Web-mode
 (autoload 'web-mode "web-mode" nil t)
@@ -103,10 +102,18 @@
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
 ;; multiple-cursors 
-(add-to-list 'load-path "~/.emacs.d/mc")
+(add-to-list 'load-path "~/.emacs.d/lisp/mc")
 (require 'multiple-cursors)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
 ;; Jade mode
 (require 'sws-mode)
 (autoload 'jade-mode "jade-mode" "Jade Mode" t)
 (add-to-list 'auto-mode-alist '("\\.jade\\'" . jade-mode))
+
+;; Dockerfile mode
+(require 'dockerfile-mode)
+
+;; Magit
+;(require 'dash)

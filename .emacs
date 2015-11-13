@@ -43,9 +43,9 @@
 (setq-default truncate-lines t)
 (setq lazy-highlight-cleanup nil)
 (setq desktop-load-locked-desktop t)
-(setq-default indent-tabs-mode nil)
 
-;(set-default-font "Monaco 12") ;; Font not available on Ubuntu
+;;(set-default-font "Monaco 13") ;; Font not available on Ubuntu
+(set-default-font "Ubuntu Mono 13")
 ;(setq next-line-add-newlines nil)
 (setq scroll-preserve-screen-position t)
 (setq x-select-enable-clipboard t)
@@ -69,6 +69,7 @@
 (setq-default tab-width 4)
 ;(setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30))
 ;(setq-default tab-width 2)
+(setq-default js2-basic-offset 4)
 
 ;; Spaces instead of tabs
 (setq-default indent-tabs-mode nil)

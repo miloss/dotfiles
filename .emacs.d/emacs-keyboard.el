@@ -9,12 +9,9 @@
 (global-set-key [f7] 'desktop-clear-lock)
 (global-set-key [f8] 'ffip-filelist-clear)
 
-; TODO: Deprecate all Super key shortcuts
+;(global-set-key (kbd "C-x M-r") 'rgrep)
+(global-set-key (kbd "C-x C-r") 'rgrep)
 
-;(global-set-key (kbd "s-1") 'delete-other-windows)
-;(global-set-key (kbd "s-3") 'split-window-horizontally)
-;(global-set-key (kbd "s-l") 'linum-mode)
-(global-set-key (kbd "C-x M-r") 'rgrep)
 ;(global-set-key [s-left] 'windmove-left)
 ;(global-set-key [s-right] 'windmove-right)
 ;(global-set-key [s-up] 'windmove-up)
@@ -43,12 +40,16 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-i") 'idomenu)
 
+;; Multiple cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 ;(global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C->") 'mc/mark-next-word-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+;; Magit
+(global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 
 ;; Shortcuts to files
 (global-set-key (kbd "C-M-e")

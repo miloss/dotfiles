@@ -22,7 +22,7 @@
 (require 'ido)
 (ido-mode t)
 (setq ido-ignore-buffers 
-	'("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer"))
+	'("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer" "^\*magit"))
 
 ;; ffip
 (require 'find-file-in-project)

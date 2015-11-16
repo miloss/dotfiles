@@ -4,7 +4,7 @@
 (require 'emacs-color-themes)
 (load-theme 'miloss t)
 
-;; Sr-Speedbar
+;; SrSpeedbar
 (require 'sr-speedbar)
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (speedbar-add-supported-extension ".hs")
@@ -22,7 +22,7 @@
 (require 'ido)
 (ido-mode t)
 (setq ido-ignore-buffers 
-	'("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer" "^\*magit"))
+    '("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer" "^\*magit"))
 
 ;; ffip
 (require 'find-file-in-project)
@@ -40,29 +40,27 @@
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . php-mode))
 
-;; Load the php-imenu index function
+; Load the php-imenu index function
 (autoload 'php-imenu-create-index "php-imenu" nil t)
 
-;; Add the index creation function to the php-mode-hook
-(add-hook 'php-mode-hook 'php-imenu-setup)
-(defun php-imenu-setup ()
-	(setq imenu-create-index-function (function php-imenu-create-index))
-	(setq php-imenu-alist-postprocessor (function reverse))
-	(imenu-add-menubar-index))
-
-;; Fixing array indendation in php-mode
+; Add the index creation function to the php-mode-hook
 (add-hook 'php-mode-hook (lambda ()
-	(defun ywb-php-lineup-arglist-intro (langelem)
-		(save-excursion
-			(goto-char (cdr langelem))
-			(vector (+ (current-column) c-basic-offset))))
-	(defun ywb-php-lineup-arglist-close (langelem)
-		(save-excursion
-			(goto-char (cdr langelem))
-			(vector (current-column))))
-	(c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
-	(c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
+    (setq imenu-create-index-function (function php-imenu-create-index))
+    (setq php-imenu-alist-postprocessor (function reverse))
+    (imenu-add-menubar-index)))
 
+; Fixing array indendation in php-mode
+(add-hook 'php-mode-hook (lambda ()
+    (defun ywb-php-lineup-arglist-intro (langelem)
+        (save-excursion
+            (goto-char (cdr langelem))
+            (vector (+ (current-column) c-basic-offset))))
+    (defun ywb-php-lineup-arglist-close (langelem)
+        (save-excursion
+            (goto-char (cdr langelem))
+            (vector (current-column))))
+    (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
+    (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
@@ -107,6 +105,12 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
+; Speed up by toggling blink-matching-paren variable
+(add-hook 'multiple-cursors-mode-enabled-hook
+          (lambda () (setq blink-matching-paren nil)))
+(add-hook 'multiple-cursors-mode-disabled-hook
+          (lambda () (setq blink-matching-paren t)))
+
 ;; Jade mode
 (require 'sws-mode)
 (autoload 'jade-mode "jade-mode" "Jade Mode" t)
@@ -116,4 +120,16 @@
 (require 'dockerfile-mode)
 
 ;; Magit
-;(require 'dash)
+(require 'dash)
+(add-to-list 'load-path "~/.emacs.d/lisp/magit/lisp")
+(require 'magit)
+(with-eval-after-load 'info
+  (info-initialize)
+  (add-to-list 'Info-directory-list
+               "~/.emacs.d/lisp/magit/Documentation/"))
+
+;; Markdown mode
+(autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))

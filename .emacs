@@ -21,12 +21,13 @@
 ; '(js-indent-level 2)
  '(js-indent-level 4)
  '(safe-local-variable-values (quote ((lexical-binding . t))))
- '(speedbar-show-unknown-files t)
- '(speedbar-use-images t)
- '(sr-speedbar-width 27)
- '(sr-speedbar-width-console 24)
  '(tool-bar-mode nil)
  '(js2-strict-missing-semi-warning nil))
+
+(setq speedbar-show-unknown-files t)
+(setq speedbar-use-images t)
+(setq sr-speedbar-width 27)
+(setq sr-speedbar-width-console 24)
 
 (tool-bar-mode -1)
 (menu-bar-mode 0)

@@ -68,6 +68,19 @@ emacs-how-to-delete-text-without-kill-ring"
   (other-window -1)
   (shell))
 
+(defun split-window-right-golden ()
+  "Split the current window vertically in approx golden ratio."
+  (interactive)
+  (let ((proportion (* 62 0.01)))
+    (split-window-right (round (* proportion (window-width))))))
+
+(defun split-window-below-golden ()
+  "Split the current window horizontally in approx golden ratio."
+  (interactive)
+  (let ((proportion (* 64 0.01)))
+    (split-window-below (round (* proportion (window-height))))))
+
+
 ;;; Desktop mode functions
 
 (defun desktop-clear-lock ()

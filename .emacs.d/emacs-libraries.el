@@ -28,12 +28,18 @@
 (require 'find-file-in-project)
 (setq ffip-find-primary "")
 (setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\)")
-(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\)\"")
+(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\|.+node_modules.+\\)\"")
 
 ; Mac OS X workaround
 ;(setq ffip-find-primary "-E")
 ;(setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
 ;(setq ffip-find-options "")
+
+;; rgrep
+(eval-after-load "grep"
+    '(progn
+       ;(add-to-list 'grep-find-ignored-files "*.min.js")
+       (add-to-list 'grep-find-ignored-directories "node_modules")))
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)

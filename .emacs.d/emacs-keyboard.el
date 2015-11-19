@@ -26,8 +26,8 @@
 
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "C-x M-2") 'split-window-above)
-(global-set-key (kbd "C-x M-3") 'split-window-left)
+(global-set-key (kbd "C-x M-2") 'split-window-below-golden)
+(global-set-key (kbd "C-x M-3") 'split-window-right-golden)
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell))

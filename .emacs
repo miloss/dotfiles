@@ -16,13 +16,13 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(inhibit-startup-screen t)
- '(js-auto-indent-flag nil)
- '(js-flat-functions t)
-; '(js-indent-level 2)
- '(js-indent-level 4)
  '(safe-local-variable-values (quote ((lexical-binding . t))))
  '(tool-bar-mode nil)
- '(js2-strict-missing-semi-warning nil))
+ '(js-auto-indent-flag nil)
+ '(js-flat-functions t)
+ '(js-indent-level 4)
+ '(js2-strict-missing-semi-warning nil)
+ '(magit-rebase-arguments nil))
 
 (setq speedbar-show-unknown-files t)
 (setq speedbar-use-images t)
@@ -31,8 +31,7 @@
 
 (tool-bar-mode -1)
 (menu-bar-mode 0)
-(when (not (display-graphic-p))
-      (setq scroll-step 1))
+(when (not (display-graphic-p)) (setq scroll-step 1))
 ;(setq scroll-conservatively 10000)
 ;(setq scroll-preserve-screen-position 1)
 ;(setq auto-window-vscroll nil)
@@ -45,8 +44,8 @@
 (setq lazy-highlight-cleanup nil)
 (setq desktop-load-locked-desktop t)
 
-;;(set-default-font "Monaco 13") ;; Font not available on Ubuntu
-(set-default-font "Ubuntu Mono 13")
+;(set-default-font "Monaco 13") ;; Font not available on Ubuntu
+(set-default-font "Ubuntu Mono 12")
 ;(setq next-line-add-newlines nil)
 (setq scroll-preserve-screen-position t)
 (setq x-select-enable-clipboard t)
@@ -78,6 +77,8 @@
 ;; Mac OS X
 (setq mac-command-modifier 'control)
 (setq ring-bell-function 'ignore)
+
+(setq text-scale-mode-step 1.04)
 
 (load-file "~/.emacs.d/emacs-functions.el")
 (load-file "~/.emacs.d/emacs-libraries.el")

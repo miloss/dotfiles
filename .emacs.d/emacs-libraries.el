@@ -129,6 +129,7 @@
 (require 'dash)
 (add-to-list 'load-path "~/.emacs.d/lisp/magit/lisp")
 (require 'magit)
+(setq git-commit-summary-max-length 70)
 (with-eval-after-load 'info
   (info-initialize)
   (add-to-list 'Info-directory-list

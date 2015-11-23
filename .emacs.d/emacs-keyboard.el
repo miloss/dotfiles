@@ -28,6 +28,8 @@
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "C-x M-2") 'split-window-below-golden)
 (global-set-key (kbd "C-x M-3") 'split-window-right-golden)
+(global-set-key (kbd "M-{") 'shrink-window-horizontally)
+(global-set-key (kbd "M-}") 'enlarge-window-horizontally)
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell))

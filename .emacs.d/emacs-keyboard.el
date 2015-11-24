@@ -30,6 +30,8 @@
 (global-set-key (kbd "C-x M-3") 'split-window-right-golden)
 (global-set-key (kbd "M-{") 'shrink-window-horizontally)
 (global-set-key (kbd "M-}") 'enlarge-window-horizontally)
+(global-set-key (kbd "M-[") 'shrink-window)
+(global-set-key (kbd "M-]") 'enlarge-window)
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell))

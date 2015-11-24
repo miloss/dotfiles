@@ -105,7 +105,7 @@
 (autoload 'restclient-mode "restclient" nil t)
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
-;; multiple-cursors 
+;; multiple-cursors
 (add-to-list 'load-path "~/.emacs.d/lisp/mc")
 (require 'multiple-cursors)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)

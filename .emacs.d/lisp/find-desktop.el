@@ -53,7 +53,17 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
                                         (mapcar 'car desktops-found))
                  (completing-read "Find desktop: "
                                   (mapcar 'car desktops-found)))))
-    (desktop-change-dir (cdr (assoc file desktops-found)))))
+    (cdr (assoc file desktops-found))))
+
+(defun fd-desktop-change-dir ()
+  "FInd a desktop and display message about it"
+  (interactive)
+  (let* ((dirpath (find-desktop)))
+    (if (boundp 'desktop-dirname)
+        (session-save))
+    (desktop-change-dir dirpath)
+    (message (concat "Desktop read from " dirpath))))
 
 (provide 'find-desktop)
+(provide 'fd-desktop-change-dir)
 ;;; find-desktop.el ends here

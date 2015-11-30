@@ -23,6 +23,7 @@
 (global-set-key (kbd "C-x g") 'goto-line)
 (global-set-key (kbd "C-x t") 'find-file-in-project)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+(global-set-key (kbd "C-x C-d") 'find-desktop)
 
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (global-set-key (kbd "M-o") 'other-window)
@@ -66,6 +67,7 @@
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
 
 ;; Predefined desktops
-(global-set-key (kbd "C-x <f1>")
-	(lambda()(interactive)
-		(desktop-change-message "/path/to/desktop")))
+(global-set-key
+ (kbd "C-x <f1>")
+ (lambda()(interactive)
+   (desktop-change-message "/path/to/desktop")))

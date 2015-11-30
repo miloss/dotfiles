@@ -26,24 +26,27 @@ emacs-how-to-delete-text-without-kill-ring"
 
 (defun saved-session ()
   (file-exists-p (concat desktop-dirname "/" desktop-base-file-name)))
+
 (defun session-restore ()
   "Restore a saved emacs session."
   (interactive)
   (if (saved-session)
       (desktop-read)
     (message "No desktop found.")))
+
 (defun session-save ()
   "Save an emacs session."
   (interactive)
   (if (saved-session)
       (if (y-or-n-p "Overwrite existing desktop?")
-					(desktop-save-in-desktop-dir)
-				(message "Session not saved."))
-		(desktop-save-in-desktop-dir)))
+          (desktop-save-in-desktop-dir)
+        (message "Session not saved."))
+    (desktop-save-in-desktop-dir)))
+
 (defun session-save ()
   "Save an emacs session (no confirmation)."
   (interactive)
-	(desktop-save-in-desktop-dir))
+  (desktop-save-in-desktop-dir))
 
 
 ;;; Windows
@@ -84,18 +87,17 @@ emacs-how-to-delete-text-without-kill-ring"
 ;;; Desktop mode functions
 
 (defun desktop-clear-lock ()
-	"Clear .emacs.desktop.lock file from current loaded desktop."
-	(interactive)
-	(shell-command (concat "rm " desktop-dirname "/.emacs.desktop.lock"))
-	(message "Desktop lock cleared"))
+  "Clear .emacs.desktop.lock file from current loaded desktop."
+  (interactive)
+  (shell-command (concat "rm " desktop-dirname "/.emacs.desktop.lock"))
+  (message "Desktop lock cleared"))
 
 (defun desktop-change-message (dname)
-	"Changes desktop and display message about it."
-	(desktop-change-dir dname)
-	(message (concat "Desktop read from " dname)))
-
+  "Changes desktop and display message about it."
+  (desktop-change-dir dname)
+  (message (concat "Desktop read from " dname)))
 
 (defun load-emacs-file ()
-	"Just reloads Emacs init file."
+  "Just reloads Emacs init file."
   (interactive)
-	(load-file "~/.emacs"))
+  (load-file "~/.emacs"))

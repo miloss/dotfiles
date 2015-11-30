@@ -21,7 +21,7 @@
 ;; Ido mode
 (require 'ido)
 (ido-mode t)
-(setq ido-ignore-buffers 
+(setq ido-ignore-buffers
     '("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer" "^\*magit"))
 
 ;; ffip
@@ -37,9 +37,9 @@
 
 ;; rgrep
 (eval-after-load "grep"
-    '(progn
-       ;(add-to-list 'grep-find-ignored-files "*.min.js")
-       (add-to-list 'grep-find-ignored-directories "node_modules")))
+  '(progn
+     ;(add-to-list 'grep-find-ignored-files "*.min.js")
+     (add-to-list 'grep-find-ignored-directories "node_modules")))
 
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)
@@ -58,13 +58,13 @@
 ; Fixing array indendation in php-mode
 (add-hook 'php-mode-hook (lambda ()
     (defun ywb-php-lineup-arglist-intro (langelem)
-        (save-excursion
-            (goto-char (cdr langelem))
-            (vector (+ (current-column) c-basic-offset))))
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (+ (current-column) c-basic-offset))))
     (defun ywb-php-lineup-arglist-close (langelem)
-        (save-excursion
-            (goto-char (cdr langelem))
-            (vector (current-column))))
+      (save-excursion
+        (goto-char (cdr langelem))
+        (vector (current-column))))
     (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
     (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
 
@@ -140,3 +140,6 @@
 (add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;; Find desktop
+(require 'find-desktop)

@@ -12,9 +12,9 @@
 
 Uses cached output from `fd-desktops-file' file, if available."
     (if (file-exists-p fd-desktops-file)
-            (shell-command-to-string 
+            (shell-command-to-string
              (concat "cat " fd-desktops-file))
-        (shell-command-to-string 
+        (shell-command-to-string
          (concat "find ~ -name '.emacs.desktop' -print 2>/dev/null"
                  " | xargs dirname"
                  " > " fd-desktops-file

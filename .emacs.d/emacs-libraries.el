@@ -143,3 +143,7 @@
 
 ;; Find desktop
 (require 'find-desktop)
+
+;; Robot mode
+(autoload 'robot-mode "robot-mode.el" "Robot Framework text mode" t)
+(add-to-list 'auto-mode-alist '("\\.txt\\'" . robot-mode))

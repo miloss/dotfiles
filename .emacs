@@ -46,7 +46,9 @@
 
 ;(set-default-font "Monaco 13") ;; Font not available on Ubuntu
 (set-default-font "Ubuntu Mono 12")
-;(setq next-line-add-newlines nil)
+(setq text-scale-mode-step 1.04)
+
+(setq next-line-add-newlines nil)
 (setq scroll-preserve-screen-position t)
 (setq x-select-enable-clipboard t)
 
@@ -77,8 +79,6 @@
 ;; Mac OS X
 (setq mac-command-modifier 'control)
 (setq ring-bell-function 'ignore)
-
-(setq text-scale-mode-step 1.04)
 
 (load-file "~/.emacs.d/emacs-functions.el")
 (load-file "~/.emacs.d/emacs-libraries.el")

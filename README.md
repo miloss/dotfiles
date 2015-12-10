@@ -1,12 +1,11 @@
 # dotfiles
 
-Mah personal collection of .files, filled from bits and pieces of knowledge scaterred around the interweb. Mostly related to Vim and Emacs.
+Personal collection of .files, compiled from bits and pieces of knowledge gathered from all around the interweb. Mostly related to Vim and Emacs.
 
 ## Author
 
-| [![twitter/mochapoetaster](http://en.gravatar.com/userimage/20849227/4e17ab5e4120e95e5469d3823381ce0f.png)](http://twitter.com/mochapoetaster) |
-|---|
-| Miloš Popović |
+Miloš Popović
+[Github](https://github.com/miloss)  [Twitter](http://twitter.com/mochapoetaster)
 
 ## Credits
 

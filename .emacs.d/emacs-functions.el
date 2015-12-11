@@ -1,10 +1,6 @@
 ;;; .emacs-functions.el --- Emacs various functions
 ;; by Milos Popovic <the.elephant@gmail.com>
 
-(defun switch-to-previous-buffer ()
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
-
 (defun ruthlessly-kill-line ()
   "Deletes a line, but does not put it in the kill-ring. (kinda)
 
@@ -16,10 +12,10 @@ emacs-how-to-delete-text-without-kill-ring"
   (setq kill-ring (cdr kill-ring)))
 
 (defun popout-directory ()
-	"Pops up a new OS window in current directory."
-	(interactive)
-	(shell-command (concat "gnome-open " (file-name-directory buffer-file-name)))
-	(message "Current directory opened"))
+  "Pops up a new OS window in current directory."
+  (interactive)
+  (shell-command (concat "gnome-open " (file-name-directory buffer-file-name)))
+  (message "Current directory opened"))
 
 
 ;;; Session functions
@@ -83,6 +79,10 @@ emacs-how-to-delete-text-without-kill-ring"
   (let ((proportion (* 64 0.01)))
     (split-window-below (round (* proportion (window-height))))))
 
+(defun other-other-window ()
+  (interactive)
+  (other-window -1))
+
 
 ;;; Desktop mode functions
 
@@ -101,3 +101,33 @@ emacs-how-to-delete-text-without-kill-ring"
   "Just reloads Emacs init file."
   (interactive)
   (load-file "~/.emacs"))
+
+
+;;; Buffer switching functions
+
+(setq skippable-buffers '("*Messages*" "*scratch*" "*Help*" "*Completitions" "*magit:" "*magit-logs:" "*magit-refs:"))
+
+(defun my-skippable-buffers ()
+  "List of buffers I would like to skip."
+  (delete nil
+          (append
+           (mapcar 'get-buffer skippable-buffers)
+           (mapcar (lambda (this-buffer)
+                     (if (string-match "^ " (buffer-name this-buffer))
+                         this-buffer))
+                   (buffer-list)))))
+
+(defun my-next-buffer ()
+  "next-buffer that skips certain buffers"
+  (interactive)
+  (next-buffer)
+  (while (member (buffer-name) skippable-buffers)
+    (next-buffer)))
+
+(defun my-previous-buffer ()
+  "previous-buffer that skips certain buffers"
+  (interactive)
+  (previous-buffer)
+  (while (member (buffer-name) skippable-buffers)
+    (previous-buffer)))
+

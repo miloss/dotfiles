@@ -1,9 +1,9 @@
 ;;; .emacs-keyboard.el --- Emacs keyboard bindings
 ;; Also, see Bozidar Batsov's emacs-bindings.el
 
-(global-set-key [C-tab] 'next-buffer)
-(global-set-key [C-S-tab] 'previous-buffer)
-(global-set-key [C-S-iso-lefttab] 'previous-buffer)
+(global-set-key [C-tab] 'my-next-buffer)
+(global-set-key [C-S-tab] 'my-previous-buffer)
+(global-set-key [C-S-iso-lefttab] 'my-previous-buffer)
 (global-set-key [f5] 'desktop-change-dir)
 (global-set-key [f6] 'session-save)
 (global-set-key [f7] 'desktop-clear-lock)
@@ -24,9 +24,11 @@
 (global-set-key (kbd "C-x t") 'find-file-in-project)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 (global-set-key (kbd "C-x C-d") 'fd-desktop-change-dir)
+(global-set-key (kbd "C-x M-b") 'ido-switch-buffer-other-window)
 
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-i") 'other-other-window)
 (global-set-key (kbd "C-x M-2") 'split-window-below-golden)
 (global-set-key (kbd "C-x M-3") 'split-window-right-golden)
 (global-set-key (kbd "M-{") 'shrink-window-horizontally)
@@ -36,6 +38,7 @@
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell))
+(global-set-key (kbd "C-z") nil)
 
 (global-set-key (kbd "C-x M-e") 'load-emacs-file)
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)

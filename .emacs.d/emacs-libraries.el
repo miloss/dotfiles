@@ -19,7 +19,6 @@
 (ac-config-default)
 
 ;; Ido mode
-(require 'ido)
 (ido-mode t)
 (setq ido-ignore-buffers
     '("\\` " "^\*Mess" "^\*Completi" "^\*SPEED" "^\*scrat" "^\*Buffer" "^\*magit"))

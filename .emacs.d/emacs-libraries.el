@@ -2,11 +2,12 @@
 
 ;; Color themes
 (require 'emacs-color-themes)
-(load-theme 'miloss t)
+(if (display-graphic-p)
+    (load-theme 'miloss t)
+  (load-theme 'monokai t))
 
 ;; SrSpeedbar
 (require 'sr-speedbar)
-(global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (speedbar-add-supported-extension ".hs")
 
 ;; SmartTabs mode
@@ -40,6 +41,37 @@
      ;(add-to-list 'grep-find-ignored-files "*.min.js")
      (add-to-list 'grep-find-ignored-directories "node_modules")))
 
+;; JavaScript mode
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
+;(smart-tabs-advice js2-indent-line js2-basic-offset)
+
+;; Web-mode
+(autoload 'web-mode "web-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+
+;; Haskell mode
+;(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
+;(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+
+;; Python mode
+(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
+(add-to-list 'load-path "~/.emacs.d/lisp/python-mode/")
+(setq py-install-directory "~/.emacs.d/lisp/python-mode/")
+(autoload 'python-mode "python-mode" "Python Mode" t)
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+(define-coding-system-alias 'UTF-8 'utf-8)
+
+; idomenu
+(autoload 'idomenu "idomenu" nil t)
+
 ;; PHP mode
 (autoload 'php-mode "php-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
@@ -66,36 +98,6 @@
         (vector (current-column))))
     (c-set-offset 'arglist-intro 'ywb-php-lineup-arglist-intro)
     (c-set-offset 'arglist-close 'ywb-php-lineup-arglist-close)))
-
-;; JavaScript mode
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
-(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
-;(smart-tabs-advice js2-indent-line js2-basic-offset)
-
-;; Web-mode
-(autoload 'web-mode "web-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
-
-;; Haskell mode
-;(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
-;(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-
-;; Python mode
-(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
-(add-to-list 'load-path "~/.emacs.d/lisp/python-mode/")
-(setq py-install-directory "~/.emacs.d/lisp/python-mode/")
-(autoload 'python-mode "python-mode" "Python Mode" t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
-(define-coding-system-alias 'UTF-8 'utf-8)
-
-; idomenu
-(autoload 'idomenu "idomenu" nil t)
 
 ;; SQL indentation
 (eval-after-load "sql" '(load-library "sql-indent"))

@@ -37,8 +37,8 @@
 (global-set-key (kbd "M-]") 'enlarge-window)
 
 (when (display-graphic-p)
-  (global-set-key (kbd "C-M-z") 'shell))
-(global-set-key (kbd "C-z") nil)
+  (global-set-key (kbd "C-M-z") 'shell)
+  (global-set-key (kbd "C-z") nil))
 
 (global-set-key (kbd "C-x M-e") 'load-emacs-file)
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)

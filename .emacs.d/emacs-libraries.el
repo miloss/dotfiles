@@ -27,7 +27,7 @@
 ;; ffip
 (require 'find-file-in-project)
 (setq ffip-find-primary "")
-(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\)")
+(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\|py\\)")
 (setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\|.+node_modules.+\\)\"")
 
 ; Mac OS X workaround

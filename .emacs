@@ -16,22 +16,25 @@
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(inhibit-startup-screen t)
- '(safe-local-variable-values (quote ((lexical-binding . t))))
- '(tool-bar-mode nil)
  '(js-auto-indent-flag nil)
  '(js-flat-functions t)
  '(js-indent-level 4)
  '(js2-strict-missing-semi-warning nil)
- '(magit-rebase-arguments nil))
+ '(magit-rebase-arguments nil)
+ '(safe-local-variable-values (quote ((lexical-binding . t))))
+ '(tool-bar-mode nil))
 
-(setq speedbar-show-unknown-files t)
-(setq speedbar-use-images t)
-(setq sr-speedbar-width 27)
-(setq sr-speedbar-width-console 24)
+(setq
+  speedbar-show-unknown-files t
+  speedbar-use-images t
+  sr-speedbar-width 30
+  sr-speedbar-width-console 24
+  sr-speedbar-right-side nil)
 
 (tool-bar-mode -1)
 (menu-bar-mode 0)
-(when (not (display-graphic-p)) (setq scroll-step 1))
+(when (not (display-graphic-p))
+      (setq scroll-step 1))
 ;(setq scroll-conservatively 10000)
 ;(setq scroll-preserve-screen-position 1)
 ;(setq auto-window-vscroll nil)
@@ -84,5 +87,5 @@
 (load-file "~/.emacs.d/emacs-libraries.el")
 (load-file "~/.emacs.d/emacs-keyboard.el")
 
-(cd "~")
+;(cd "~")
 ;;; .emacs ends here

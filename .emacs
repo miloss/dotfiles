@@ -22,7 +22,9 @@
  '(js2-strict-missing-semi-warning nil)
  '(magit-rebase-arguments nil)
  '(safe-local-variable-values (quote ((lexical-binding . t))))
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(blink-cursor-blinks -1)
+ '(cursor-in-non-selected-windows nil))
 
 (setq
   speedbar-show-unknown-files t

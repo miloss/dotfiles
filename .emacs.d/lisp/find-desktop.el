@@ -62,6 +62,7 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
     (if (boundp 'desktop-dirname)
         (session-save))
     (desktop-change-dir dirpath)
+    (setq ffip-project-root dirpath)
     (message (concat "Desktop read from " dirpath))))
 
 (provide 'find-desktop)

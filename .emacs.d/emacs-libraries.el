@@ -9,7 +9,6 @@
 ;; SrSpeedbar
 (require 'sr-speedbar)
 (speedbar-add-supported-extension ".hs")
-(speedbar-add-supported-extension ".hs")
 (setq sr-speedbar-skip-other-window-p t)
 
 (defun select-next-window ()
@@ -38,10 +37,25 @@
 
 ;; ffip
 (require 'find-file-in-project)
-(setq ffip-find-primary "")
-(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\|py\\)")
-(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\|.+node_modules.+\\)\"")
+(setq ffip-patterns
+      '("*.html"
+        "*.js"
+        "*.css"
+        "*.scss"
+        "*.sass"
+        "*.java"
+        "*.xml"
+        "*.js"
+        "*.py"
+        "*.txt"
+        "*.ini"
+        "*.json"))
+(setq ffip-prune-patterns '("*/.git/*" "*/.hooks/*" "*/.hgignore" "*/.emacs.desktop*" "*/node_modules/*" "*/.tmp/*"))
+;(setq ffip-prefer-ido-mode t)
 
+;(setq ffip-find-primary "")
+;(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\|py\\|txt\\)")
+;(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\|.+node_modules.+\\)\"")
 ; Mac OS X workaround
 ;(setq ffip-find-primary "-E")
 ;(setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
@@ -160,3 +174,11 @@
 ;; Robot mode
 (autoload 'robot-mode "robot-mode.el" "Robot Framework text mode" t)
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . robot-mode))
+
+;; SCSS mode
+(autoload 'scss-mode "scss-mode")
+(add-to-list 'auto-mode-alist '("\\.scss\\'" . scss-mode))
+
+;; SASS mode
+(autoload 'sass-mode "sass-mode")
+(add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))

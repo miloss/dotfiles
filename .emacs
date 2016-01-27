@@ -72,11 +72,11 @@
   version-control t)
 
 ;; Tab size
-(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52))
-(setq-default tab-width 4)
+;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52))
+;(setq-default tab-width 4)
 ;(setq tab-stop-list '(2 4 6 8 10 12 14 16 18 20 22 24 26 28 30))
 ;(setq-default tab-width 2)
-(setq-default js2-basic-offset 4)
+;(setq-default js2-basic-offset 4)
 
 ;; Spaces instead of tabs
 (setq-default indent-tabs-mode nil)

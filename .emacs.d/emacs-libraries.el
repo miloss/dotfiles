@@ -50,29 +50,40 @@
         "*.txt"
         "*.ini"
         "*.json"))
-(setq ffip-prune-patterns '("*/.git/*" "*/.hooks/*" "*/.hgignore" "*/.emacs.desktop*" "*/node_modules/*" "*/.tmp/*"))
+(setq ffip-prune-patterns
+      '("*/.git/*"
+        "*/.hooks/*"
+        "*/.tmp/*"
+        "*/.hgignore"
+        "*/.emacs.desktop*"
+        "*/node_modules/*"
+        "*/coverage/*"
+        "*/karma_html/*"
+        "*/build/*"))
 ;(setq ffip-prefer-ido-mode t)
-
-;(setq ffip-find-primary "")
-;(setq ffip-regexp ".+\\.\\(js\\|css\\|tpl\\|php\\|el\\|phtml\\|json\\|ini\\|html\\|py\\|txt\\)")
-;(setq ffip-find-options "-not -regex \"\\(.+\\.svn.+\\|.+\\.git.+\\|.+~\\|.+\\.swp\\|.+node_modules.+\\)\"")
-; Mac OS X workaround
-;(setq ffip-find-primary "-E")
-;(setq ffip-regexp ".*(js|css|tpl|php|py|el|phtml|json|ini|html)$")
-;(setq ffip-find-options "")
 
 ;; rgrep
 (eval-after-load "grep"
   '(progn
      ;(add-to-list 'grep-find-ignored-files "*.min.js")
+     (add-to-list 'grep-find-ignored-directories ".tmp")
+     (add-to-list 'grep-find-ignored-directories "dist")
+     (add-to-list 'grep-find-ignored-directories "build")
+     (add-to-list 'grep-find-ignored-directories "coverage")
+     (add-to-list 'grep-find-ignored-directories "karma_html")
      (add-to-list 'grep-find-ignored-directories "node_modules")))
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
-(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
+;(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
 ;(smart-tabs-advice js2-indent-line js2-basic-offset)
+
+(require 'jscs)
+(add-hook 'js-mode-hook #'jscs-indent-apply)
+(add-hook 'js2-mode-hook #'jscs-indent-apply)
+(add-hook 'json-mode-hook #'jscs-indent-apply)
 
 ;; Web-mode
 (autoload 'web-mode "web-mode" nil t)

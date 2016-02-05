@@ -39,6 +39,8 @@
 (require 'find-file-in-project)
 (setq ffip-patterns
       '("*.html"
+        "*.el"
+        "*.md"
         "*.js"
         "*.css"
         "*.scss"
@@ -53,13 +55,14 @@
 (setq ffip-prune-patterns
       '("*/.git/*"
         "*/.hooks/*"
-        "*/.tmp/*"
         "*/.hgignore"
         "*/.emacs.desktop*"
         "*/node_modules/*"
+        "*/bower_components/*"
         "*/coverage/*"
         "*/karma_html/*"
-        "*/build/*"))
+        "*/build/*"
+        "*/.tmp/*"))
 ;(setq ffip-prefer-ido-mode t)
 
 ;; rgrep

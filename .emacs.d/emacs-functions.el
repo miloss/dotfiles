@@ -17,6 +17,18 @@ emacs-how-to-delete-text-without-kill-ring"
   (shell-command (concat "gnome-open " (file-name-directory buffer-file-name)))
   (message "Current directory opened"))
 
+(defun open-in-firefox ()
+  "Opens current local file in Mozila Firefox."
+  (interactive)
+  (shell-command (concat "firefox " (buffer-file-name)))
+  (message "File opened in Firefox"))
+
+(defun open-terminal-here ()
+  "Launches host terminal."
+  (interactive)
+  (shell-command "mate-terminal")
+  (message "Terminal opened"))
+
 
 ;;; Session functions
 
@@ -83,6 +95,18 @@ emacs-how-to-delete-text-without-kill-ring"
   (interactive)
   (other-window -1))
 
+(defun split-window-three-parts ()
+  "Shows the Speedbar on the left and another window to the right"
+  (interactive)
+  (sr-speedbar-open)
+  (split-window-right))
+
+(defun split-window-three-parts-magit ()
+  "Shows the Speedbar on the left and Magit window to the right"
+  (interactive)
+  (sr-speedbar-open)
+  (split-window-right)
+  (magit-status))
 
 ;;; Desktop mode functions
 
@@ -131,3 +155,12 @@ emacs-how-to-delete-text-without-kill-ring"
   (while (member (buffer-name) skippable-buffers)
     (previous-buffer)))
 
+
+;;; Files
+
+(defun recentf-ido-find-file ()
+  "Find a recent file using Ido."
+  (interactive)
+  (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
+    (when file
+      (find-file file))))

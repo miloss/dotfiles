@@ -99,7 +99,10 @@ emacs-how-to-delete-text-without-kill-ring"
   "Shows the Speedbar on the left and another window to the right"
   (interactive)
   (sr-speedbar-open)
-  (split-window-right))
+  (split-window-right)
+  (other-window -1)
+  (my-previous-buffer)
+  (other-window -1))
 
 (defun split-window-three-parts-magit ()
   "Shows the Speedbar on the left and Magit window to the right"

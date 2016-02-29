@@ -41,6 +41,8 @@
       '("*.html"
         "*.el"
         "*.md"
+        "*.sh"
+        "*.service"
         "*.js"
         "*.css"
         "*.scss"
@@ -62,6 +64,7 @@
         "*/coverage/*"
         "*/karma_html/*"
         "*/build/*"
+        "*/dist/*"
         "*/.tmp/*"))
 ;(setq ffip-prefer-ido-mode t)
 
@@ -83,10 +86,10 @@
 ;(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
 ;(smart-tabs-advice js2-indent-line js2-basic-offset)
 
-(require 'jscs)
-(add-hook 'js-mode-hook #'jscs-indent-apply)
-(add-hook 'js2-mode-hook #'jscs-indent-apply)
-(add-hook 'json-mode-hook #'jscs-indent-apply)
+;(require 'jscs)
+;(add-hook 'js-mode-hook #'jscs-indent-apply)
+;(add-hook 'js2-mode-hook #'jscs-indent-apply)
+;(add-hook 'json-mode-hook #'jscs-indent-apply)
 
 ;; Web-mode
 (autoload 'web-mode "web-mode" nil t)

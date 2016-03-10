@@ -53,6 +53,7 @@
         "*.py"
         "*.txt"
         "*.ini"
+        "*.conf"
         "*.json"))
 (setq ffip-prune-patterns
       '("*/.git/*"

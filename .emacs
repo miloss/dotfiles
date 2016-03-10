@@ -24,7 +24,8 @@
  '(safe-local-variable-values (quote ((lexical-binding . t))))
  '(tool-bar-mode nil)
  '(blink-cursor-blinks -1)
- '(cursor-in-non-selected-windows nil))
+ '(cursor-in-non-selected-windows nil)
+ '(desktop-restore-eager 10))
 
 (setq
   speedbar-show-unknown-files t

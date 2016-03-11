@@ -6,6 +6,10 @@
   "~/.emacs.desktops.list"
   "Location of a file to store all desktops.")
 
+(defvar fd-desktop-name
+  ""
+  "Directory name of currently loaded desktop.")
+
 
 (defun fd-desktop-find ()
     "Return output of GNU 'find' command over a $HOME directory.
@@ -62,7 +66,7 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
     (if (boundp 'desktop-dirname)
         (session-save))
     (desktop-change-dir dirpath)
-    (setq ffip-project-root dirpath)
+    (setq fd-desktop-name (file-name-nondirectory (directory-file-name dirpath)))
     (message (concat "Desktop read from " dirpath))))
 
 (provide 'find-desktop)

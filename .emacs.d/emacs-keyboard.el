@@ -29,6 +29,7 @@
 
 (global-set-key (kbd "M-p") 'sr-speedbar-toggle)
 (global-set-key (kbd "M-s") 'sr-speedbar-toggle)
+(global-set-key (kbd "C-x M-s") 'sr-speedbar-refresh-toggle)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-i") 'other-other-window)
 (global-set-key (kbd "M-0") 'delete-window)

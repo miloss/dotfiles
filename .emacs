@@ -86,6 +86,11 @@
 (setq mac-command-modifier 'control)
 (setq ring-bell-function 'ignore)
 
+;; Shell colors
+(add-hook 'comint-preoutput-filter-functions
+             (lambda (output)
+               (replace-regexp-in-string "\\[[0-9]+[GK]" "" output)))
+
 (load-file "~/.emacs.d/emacs-functions.el")
 (load-file "~/.emacs.d/emacs-libraries.el")
 (load-file "~/.emacs.d/emacs-keyboard.el")

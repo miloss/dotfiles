@@ -111,6 +111,23 @@ emacs-how-to-delete-text-without-kill-ring"
   (split-window-right)
   (magit-status))
 
+(defun split-window-multi ()
+  "Split Emacs into favorite useful windows"
+  (interactive)
+  (sr-speedbar-open)
+  (split-window-right)
+  (magit-status)
+  (split-window-below)
+  (other-window 1)
+  (shell)
+  (other-window 1))
+
+(defun single-window ()
+  "Show only one window"
+  (interactive)
+  (sr-speedbar-close)
+  (delete-other-windows))
+
 ;;; Desktop mode functions
 
 (defun desktop-clear-lock ()
@@ -167,3 +184,9 @@ emacs-how-to-delete-text-without-kill-ring"
   (let ((file (ido-completing-read "Choose recent file: " recentf-list nil t)))
     (when file
       (find-file file))))
+
+(defun rgrep-in-project ()
+  "Find highlighted string in all files in project"
+  (interactive)
+  (grep-compute-defaults)
+  (rgrep (grep-read-regexp) "*" fd-desktop-name))

@@ -70,7 +70,8 @@
   delete-old-versions t
   kept-new-versions 6
   kept-old-versions 2
-  version-control t)
+  version-control t
+  kill-buffer-query-functions (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
 
 ;; Tab size
 ;(setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52))
@@ -89,7 +90,7 @@
 ;; Shell colors
 (add-hook 'comint-preoutput-filter-functions
              (lambda (output)
-               (replace-regexp-in-string "\\[[0-9]+[GK]" "" output)))
+               (replace-regexp-in-string "\\[[0-9]+[GKJ]" "" output)))
 
 (load-file "~/.emacs.d/emacs-functions.el")
 (load-file "~/.emacs.d/emacs-libraries.el")

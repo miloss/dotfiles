@@ -9,8 +9,8 @@
 (global-set-key [f7] 'desktop-clear-lock)
 (global-set-key [f8] 'ffip-filelist-clear)
 
-;(global-set-key (kbd "C-x M-r") 'rgrep)
 (global-set-key (kbd "C-x C-r") 'rgrep)
+(global-set-key (kbd "C-x M-r") 'rgrep-in-project)
 
 ;(global-set-key [s-left] 'windmove-left)
 ;(global-set-key [s-right] 'windmove-right)
@@ -36,9 +36,11 @@
 (global-set-key (kbd "C-x M-2") 'split-window-below-golden)
 (global-set-key (kbd "C-x M-3") 'split-window-right-golden)
 (global-set-key (kbd "C-x C-3") 'split-window-three-parts)
-(global-set-key (kbd "C-3") 'split-window-three-parts)
 (global-set-key (kbd "C-x C-g") 'split-window-three-parts-magit)
+(global-set-key (kbd "C-1") 'single-window)
+(global-set-key (kbd "C-3") 'split-window-three-parts)
 (global-set-key (kbd "C-4") 'split-window-three-parts-magit)
+(global-set-key (kbd "C-5") 'split-window-multi)
 (global-set-key (kbd "M-{") 'shrink-window-horizontally)
 (global-set-key (kbd "M-}") 'enlarge-window-horizontally)
 (global-set-key (kbd "M-[") 'shrink-window)

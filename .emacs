@@ -61,7 +61,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 (setq frame-title-format '("" fd-desktop-name " %f"))
-(set-frame-parameter (selected-frame) 'alpha '(99 99))
+;(set-frame-parameter (selected-frame) 'alpha '(100 100))
 
 (setq
   backup-by-copying t

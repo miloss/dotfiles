@@ -19,8 +19,8 @@ Uses cached output from `fd-desktops-file' file, if available."
             (shell-command-to-string
              (concat "cat " fd-desktops-file))
         (shell-command-to-string
-         (concat "find ~ -name '.emacs.desktop' -print 2>/dev/null"
-                 " | xargs dirname"
+         (concat "find ~ -name '.emacs.desktop'"
+                 " | xargs -n1 dirname"
                  " > " fd-desktops-file
                  "; cat " fd-desktops-file))))
 

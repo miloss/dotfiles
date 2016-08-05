@@ -665,7 +665,7 @@ Moe, moe, kyun!")
    `(mmm-code-submode-face ((,class (:background ,blue-00))))
    `(mmm-comment-submode-face ((,class (:background ,blue-0))))
    `(mmm-declaration-submode-face ((,class (:background ,cyan-1))))
-   `(mmm-default-submode-face ((,class (:background ,black-4))))
+   `(mmm-default-submode-face ((,class (:background ,black-6))))
    `(mmm-delimiter-face ((,class (:background nil :foreground ,white-0))))
    `(mmm-init-submode-face ((,class (:background ,magenta-0))))
    `(mmm-output-submode-face ((,class (:background ,purple-00))))
@@ -872,6 +872,13 @@ Moe, moe, kyun!")
    `(haskell-interactive-face-garbage ((,class (:foreground ,black-2))))
    `(haskell-interactive-face-prompt ((,class (:foreground ,green-01 :background ,black-2-5 :bold t))))
    `(haskell-interactive-face-result ((,class (:foreground ,blue-1))))
+
+   ;; EMMS
+   `(emms-state-current-playing-time ((,class (:foreground ,blue-3 :bold t))))
+   `(emms-state-total-playing-time ((,class (:foreground ,blue-3))))
+   `(emms-playlist-selected-face ((,class (:foreground ,green-2 :bold t))))
+   `(emms-playlist-track-face ((,class (:foreground ,cyan-5))))
+
 
    ;; tty-menu
    `(menu ((,class (:foreground ,black-1 :background ,black-3))))

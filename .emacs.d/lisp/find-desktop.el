@@ -19,8 +19,8 @@ Uses cached output from `fd-desktops-file' file, if available."
             (shell-command-to-string
              (concat "cat " fd-desktops-file))
         (shell-command-to-string
-         (concat "find ~ -name '.emacs.desktop'"
-                 " | xargs -n1 dirname"
+         (concat "find ~ -name '.emacs.desktop' -print 2>/dev/null"
+                 " | xargs dirname"
                  " > " fd-desktops-file
                  "; cat " fd-desktops-file))))
 
@@ -66,8 +66,10 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
     (if (boundp 'desktop-dirname)
         (session-save))
     (desktop-change-dir dirpath)
-    (setq fd-desktop-name (file-name-nondirectory (directory-file-name dirpath)))
-    (message (concat "Desktop read from " dirpath))))
+    (setq fd-desktop-name (upcase (file-name-nondirectory (directory-file-name dirpath))))
+    (message (concat "Desktop read from " dirpath))
+    (if (not (file-exists-p (concat dirpath "/.emacs.desktop")))
+        (dired dirpath))))
 
 (provide 'find-desktop)
 (provide 'fd-desktop-change-dir)

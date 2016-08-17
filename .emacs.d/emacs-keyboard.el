@@ -48,6 +48,7 @@
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell)
+  (global-set-key (kbd "C-x M-z") 'another-shell)
   (global-set-key (kbd "C-z") nil))
 
 (global-set-key (kbd "C-x M-e") 'load-emacs-file)

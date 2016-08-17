@@ -175,6 +175,14 @@ emacs-how-to-delete-text-without-kill-ring"
   (while (member (buffer-name) skippable-buffers)
     (previous-buffer)))
 
+(defun another-shell ()
+  "Split window vertically and open shell below"
+  (interactive)
+  (split-window-below)
+  (other-window 1)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'shell)))
+
 
 ;;; Files
 

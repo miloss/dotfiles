@@ -44,6 +44,8 @@
         "*.sh"
         "*.service"
         "*.js"
+        "*.coffee"
+        "*.ejs"
         "*.css"
         "*.scss"
         "*.sass"
@@ -52,6 +54,7 @@
         "*.js"
         "*.py"
         "*.txt"
+        "*.robot"
         "*.ini"
         "*.conf"
         "*.json"))
@@ -84,6 +87,7 @@
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+(setq js2-strict-inconsistent-return-warning nil)
 ;(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
 ;(smart-tabs-advice js2-indent-line js2-basic-offset)
 
@@ -101,7 +105,7 @@
 
 ;; Haskell mode
 ;(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
-;(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
 ;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
 ;; Python mode
@@ -191,7 +195,7 @@
 
 ;; Robot mode
 (autoload 'robot-mode "robot-mode.el" "Robot Framework text mode" t)
-(add-to-list 'auto-mode-alist '("\\.txt\\'" . robot-mode))
+(add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
 
 ;; SCSS mode
 (autoload 'scss-mode "scss-mode")
@@ -200,3 +204,34 @@
 ;; SASS mode
 (autoload 'sass-mode "sass-mode")
 (add-to-list 'auto-mode-alist '("\\.sass\\'" . sass-mode))
+
+;; HideShow mode settings
+(defvar hs-special-modes-alist
+  (mapcar 'purecopy
+  '((c-mode "{" "}" "/[*/]" nil nil)
+    (c++-mode "{" "}" "/[*/]" nil nil)
+    (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
+    (java-mode "{" "}" "/[*/]" nil nil)
+    (js-mode "{" "}" "/[*/]" nil)
+    (js2-mode "{" "}" "/[*/]" nil))))
+
+;; JSX mode
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
+(autoload 'jsx-mode "jsx-mode" "JSX mode" t)
+
+;; Neo Tree
+;(global-set-key [f8] 'neotree-toggle)
+
+(defun neotree-project-dir ()
+  "Open NeoTree using the git root."
+  (interactive)
+  (neotree-dir fd-desktop-path))
+(global-set-key [f8] 'neotree-project-dir)
+
+;; TypeScript Mode
+(require 'tss)
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(setq tss-popup-help-key "C-:")
+(setq tss-jump-to-definition-key "C->")
+(setq tss-implement-definition-key "C-c i")
+(tss-config-default)

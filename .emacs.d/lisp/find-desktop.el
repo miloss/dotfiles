@@ -10,6 +10,10 @@
   ""
   "Directory name of currently loaded desktop.")
 
+(defvar fd-desktop-path
+  ""
+  "Loaded desktop directory path.")
+
 
 (defun fd-desktop-find ()
     "Return output of GNU 'find' command over a $HOME directory.
@@ -68,6 +72,7 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
     (desktop-change-dir dirpath)
     (setq fd-desktop-name (upcase (file-name-nondirectory (directory-file-name dirpath))))
     (message (concat "Desktop read from " dirpath))
+    (setq fd-desktop-path dirpath)
     (if (not (file-exists-p (concat dirpath "/.emacs.desktop")))
         (dired dirpath))))
 

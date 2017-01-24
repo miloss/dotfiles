@@ -9,8 +9,8 @@
 (global-set-key [f7] 'desktop-clear-lock)
 (global-set-key [f8] 'ffip-filelist-clear)
 
-(global-set-key (kbd "C-x C-r") 'rgrep)
-(global-set-key (kbd "C-x M-r") 'rgrep-in-project)
+(global-set-key (kbd "C-x M-r") 'rgrep)
+(global-set-key (kbd "C-x C-r") 'rgrep-in-project)
 
 ;(global-set-key [s-left] 'windmove-left)
 ;(global-set-key [s-right] 'windmove-right)
@@ -70,15 +70,18 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-M-g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
+(global-set-key (kbd "C-x M-m") 'magit-log-buffer-file)
 
 ;; Shortcuts to files
-(global-set-key (kbd "C-M-e")
+(global-set-key (kbd "C-M-S-e")
   (lambda()(interactive)(find-file "~/.emacs")))
-(global-set-key (kbd "C-M-f")
+(global-set-key (kbd "C-M-S-l")
+  (lambda()(interactive)(find-file "~/.emacs.desktops.list")))
+(global-set-key (kbd "C-M-S-f")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-functions.el")))
-(global-set-key (kbd "C-M-l")
+(global-set-key (kbd "C-M-S-b")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-libraries.el")))
-(global-set-key (kbd "C-M-k")
+(global-set-key (kbd "C-M-S-k")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
 
 ;; Predefined desktops

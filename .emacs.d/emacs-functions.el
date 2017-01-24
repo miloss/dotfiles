@@ -98,23 +98,21 @@ emacs-how-to-delete-text-without-kill-ring"
 (defun split-window-three-parts ()
   "Shows the Speedbar on the left and another window to the right"
   (interactive)
-  (sr-speedbar-open)
-  (split-window-right)
-  (other-window -1)
-  (my-previous-buffer)
-  (other-window -1))
+  (neotree-project-dir) ;(sr-speedbar-open)
+  (other-window 1)
+  (split-window-right))
 
 (defun split-window-three-parts-magit ()
   "Shows the Speedbar on the left and Magit window to the right"
   (interactive)
-  (sr-speedbar-open)
+  (neotree-project-dir) ;(sr-speedbar-open)
   (split-window-right)
   (magit-status))
 
 (defun split-window-multi ()
   "Split Emacs into favorite useful windows"
   (interactive)
-  (sr-speedbar-open)
+  (neotree-project-dir) ;(sr-speedbar-open)
   (split-window-right)
   (magit-status)
   (split-window-below)
@@ -125,8 +123,16 @@ emacs-how-to-delete-text-without-kill-ring"
 (defun single-window ()
   "Show only one window"
   (interactive)
-  (sr-speedbar-close)
+  (neotree-hide) ;(sr-speedbar-close)
   (delete-other-windows))
+
+(defun another-shell ()
+  "Split window vertically and open shell below"
+  (interactive)
+  (split-window-below)
+  (other-window 1)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'shell)))
 
 ;;; Desktop mode functions
 
@@ -165,6 +171,7 @@ emacs-how-to-delete-text-without-kill-ring"
   "next-buffer that skips certain buffers"
   (interactive)
   (next-buffer)
+  (buffer-name)
   (while (member (buffer-name) skippable-buffers)
     (next-buffer)))
 
@@ -174,14 +181,6 @@ emacs-how-to-delete-text-without-kill-ring"
   (previous-buffer)
   (while (member (buffer-name) skippable-buffers)
     (previous-buffer)))
-
-(defun another-shell ()
-  "Split window vertically and open shell below"
-  (interactive)
-  (split-window-below)
-  (other-window 1)
-  (let ((current-prefix-arg 4))
-    (call-interactively 'shell)))
 
 
 ;;; Files
@@ -197,4 +196,5 @@ emacs-how-to-delete-text-without-kill-ring"
   "Find highlighted string in all files in project"
   (interactive)
   (grep-compute-defaults)
-  (rgrep (grep-read-regexp) "*" fd-desktop-name))
+  (rgrep (grep-read-regexp) "*" desktop-dirname)
+  (other-window 1))

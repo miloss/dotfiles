@@ -69,6 +69,7 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
   (let* ((dirpath (find-desktop)))
     (if (boundp 'desktop-dirname)
         (session-save))
+    (neotree-hide)
     (desktop-change-dir dirpath)
     (setq fd-desktop-name (upcase (file-name-nondirectory (directory-file-name dirpath))))
     (message (concat "Desktop read from " dirpath))

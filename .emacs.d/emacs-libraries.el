@@ -44,6 +44,7 @@
         "*.sh"
         "*.service"
         "*.js"
+        "*.ts"
         "*.coffee"
         "*.ejs"
         "*.css"

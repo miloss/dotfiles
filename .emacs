@@ -14,18 +14,25 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(blink-cursor-blinks -1)
  '(column-number-mode t)
+ '(cursor-in-non-selected-windows nil)
+ '(desktop-restore-eager 10)
  '(inhibit-startup-screen t)
  '(js-auto-indent-flag nil)
  '(js-flat-functions t)
- '(js-indent-level 4)
  '(js2-strict-missing-semi-warning nil)
  '(magit-rebase-arguments nil)
- '(safe-local-variable-values (quote ((lexical-binding . t))))
- '(tool-bar-mode nil)
- '(blink-cursor-blinks -1)
- '(cursor-in-non-selected-windows nil)
- '(desktop-restore-eager 10))
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa-stable" . "http://stable.melpa.org/packages/"))))
+ '(safe-local-variable-values
+   (quote
+    ((haskell-process-use-ghci . t)
+     (haskell-indent-spaces . 4)
+     (lexical-binding . t))))
+ '(tool-bar-mode nil))
 
 (setq
   speedbar-show-unknown-files t
@@ -61,7 +68,7 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
 (setq frame-title-format '("" fd-desktop-name " %f"))
-;(set-frame-parameter (selected-frame) 'alpha '(100 100))
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
 
 (setq
   backup-by-copying t

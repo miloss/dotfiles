@@ -3,7 +3,7 @@
 ;; Color themes
 (require 'emacs-color-themes)
 (if (display-graphic-p)
-    (load-theme 'miloss t)
+    (load-theme 'gruvbox t)
   (load-theme 'monokai t))
 
 ;; SrSpeedbar

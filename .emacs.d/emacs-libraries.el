@@ -28,6 +28,8 @@
 ;; Auto-complete.el
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/auto-complete/ac-dict")
+(setq ac-quick-help-delay 0.2)
+(setq ac-auto-show-menu 0.2)
 (ac-config-default)
 
 ;; Ido mode
@@ -76,7 +78,7 @@
 ;; rgrep
 (eval-after-load "grep"
   '(progn
-     ;(add-to-list 'grep-find-ignored-files "*.min.js")
+     (add-to-list 'grep-find-ignored-files ".emacs.desktop")
      (add-to-list 'grep-find-ignored-directories ".tmp")
      (add-to-list 'grep-find-ignored-directories "dist")
      (add-to-list 'grep-find-ignored-directories "build")
@@ -171,6 +173,7 @@
 (require 'sws-mode)
 (autoload 'jade-mode "jade-mode" "Jade Mode" t)
 (add-to-list 'auto-mode-alist '("\\.jade\\'" . jade-mode))
+(add-to-list 'auto-mode-alist '("\\.pug\\'" . jade-mode))
 
 ;; Dockerfile mode
 (require 'dockerfile-mode)
@@ -232,7 +235,7 @@
 ;; TypeScript Mode
 (require 'tss)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(setq tss-popup-help-key "C-:")
-(setq tss-jump-to-definition-key "C->")
-(setq tss-implement-definition-key "C-c i")
-(tss-config-default)
+;(setq tss-popup-help-key "C-:")
+;(setq tss-jump-to-definition-key "C->")
+;(setq tss-implement-definition-key "C-c i")
+;(tss-config-default)

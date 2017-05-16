@@ -7,7 +7,8 @@
 (global-set-key [f5] 'desktop-change-dir)
 (global-set-key [f6] 'session-save)
 (global-set-key [f7] 'desktop-clear-lock)
-(global-set-key [f8] 'ffip-filelist-clear)
+;(global-set-key [f8] 'ffip-filelist-clear)
+;(global-set-key [f8] 'neotree-toggle)
 
 (global-set-key (kbd "C-x M-r") 'rgrep)
 (global-set-key (kbd "C-x C-r") 'rgrep-in-project)
@@ -49,7 +50,8 @@
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell)
   (global-set-key (kbd "C-x M-z") 'another-shell)
-  (global-set-key (kbd "C-z") nil))
+  (global-set-key (kbd "C-z") nil)
+  (global-set-key (kbd "M-?") nil))
 
 (global-set-key (kbd "C-x M-e") 'load-emacs-file)
 (global-set-key (kbd "C-x M-t") 'emacs-init-time)
@@ -83,6 +85,14 @@
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-libraries.el")))
 (global-set-key (kbd "C-M-S-k")
   (lambda()(interactive)(find-file "~/.emacs.d/emacs-keyboard.el")))
+
+;; Shell commands
+(global-set-key (kbd "M-g t")
+  (lambda()(interactive)(run-shell-command "grunt test")))
+(global-set-key (kbd "M-g s")
+  (lambda()(interactive)(run-shell-command "grunt serve")))
+(global-set-key (kbd "M-g w")
+  (lambda()(interactive)(run-shell-command "grunt watch:test")))
 
 ;; Predefined desktops
 (global-set-key

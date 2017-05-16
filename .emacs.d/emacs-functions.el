@@ -198,3 +198,12 @@ emacs-how-to-delete-text-without-kill-ring"
   (grep-compute-defaults)
   (rgrep (grep-read-regexp) "*" desktop-dirname)
   (other-window 1))
+
+;;; Shell tasks
+(defun run-shell-command (cmd)
+  "Switch to shell buffer and run command"
+  (other-window 1)
+  (shell)
+  (end-of-buffer)
+  (insert cmd)
+  (comint-send-input))

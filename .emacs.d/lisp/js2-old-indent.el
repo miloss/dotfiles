@@ -58,7 +58,6 @@
 
 (defvar js2-language-version)
 
-(declare-function js2-mark-safe-local "js2-mode")
 (declare-function js2-backward-sws "js2-mode")
 (declare-function js2-forward-sws "js2-mode")
 (declare-function js2-same-line "js2-mode")
@@ -131,13 +130,13 @@ switch statement body are indented one additional level."
 followed by an opening brace.")
 
 (defconst js2-indent-operator-re
-  (concat "[-+*/%<>&^|?:.]\\([^-+*/]\\|$\\)\\|!?=\\|"
-          (regexp-opt '("in" "instanceof") 'words))
+  (concat "[-+*/%<>&^|?:.]\\([^-+*/.]\\|$\\)\\|!?=\\|"
+          (regexp-opt '("in" "instanceof") 'symbols))
   "Regular expression matching operators that affect indentation
 of continued expressions.")
 
 (defconst js2-declaration-keyword-re
-  (regexp-opt '("var" "let" "const") 'words)
+  (regexp-opt '("var" "let" "const") 'symbols)
   "Regular expression matching variable declaration keywords.")
 
 (defun js2-re-search-forward-inner (regexp &optional bound count)
@@ -224,32 +223,35 @@ and comments have been removed."
              (and (js2-re-search-backward "[?:{]\\|\\_<case\\_>" nil t)
                   (eq (char-after) ??))))
        (not (and
-             (eq (char-after) ?*)
-             (looking-at (concat "\\* *" js2-mode-identifier-re " *("))
+             (eq (char-after) ?/)
              (save-excursion
-               (goto-char (1- (match-end 0)))
-               (let (forward-sexp-function) (forward-sexp))
-               (js2-forward-sws)
-               (eq (char-after) ?{))))))
+               (eq (nth 3 (syntax-ppss)) ?/))))
+       (not (and
+             (eq (char-after) ?*)
+             ;; Generator method (possibly using computed property).
+             (looking-at (concat "\\* *\\(?:\\[\\|"
+                                 js2-mode-identifier-re
+                                 " *(\\)"))
+             (save-excursion
+               (js2-backward-sws)
+               ;; We might misindent some expressions that would
+               ;; return NaN anyway.  Shouldn't be a problem.
+               (memq (char-before) '(?, ?} ?{)))))))
 
 (defun js2-continued-expression-p ()
   "Return non-nil if the current line continues an expression."
   (save-excursion
     (back-to-indentation)
-    (or (js2-looking-at-operator-p)
-        (when (catch 'found
-                (while (and (re-search-backward "\n" nil t)
-                            (let ((state (syntax-ppss)))
-                              (when (nth 4 state)
-                                (goto-char (nth 8 state))) ;; skip comments
-                              (skip-chars-backward " \t")
-                              (if (bolp)
-                                  t
-                                (throw 'found t))))))
-          (backward-char)
-          (when (js2-looking-at-operator-p)
-            (backward-char)
-            (not (looking-at "\\*\\|\\+\\+\\|--\\|/[/*]")))))))
+    (if (js2-looking-at-operator-p)
+        (or (not (memq (char-after) '(?- ?+)))
+            (progn
+              (forward-comment (- (point)))
+              (not (memq (char-before) '(?, ?\[ ?\()))))
+      (forward-comment (- (point)))
+      (or (bobp) (backward-char))
+      (when (js2-looking-at-operator-p)
+        (backward-char)
+        (not (looking-at "\\*\\|\\+\\+\\|--\\|/[/*]"))))))
 
 (defun js2-end-of-do-while-loop-p ()
   "Return non-nil if word after point is `while' of a do-while

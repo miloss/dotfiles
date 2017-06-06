@@ -10,6 +10,7 @@
 ;(global-set-key [f8] 'ffip-filelist-clear)
 ;(global-set-key [f8] 'neotree-toggle)
 
+(global-set-key (kbd "C-x M-n") 'new-emacs)
 (global-set-key (kbd "C-x M-r") 'rgrep)
 (global-set-key (kbd "C-x C-r") 'rgrep-in-project)
 

@@ -29,6 +29,10 @@ emacs-how-to-delete-text-without-kill-ring"
   (shell-command "mate-terminal")
   (message "Terminal opened"))
 
+(defun new-emacs ()
+  (interactive)
+  (shell-command "open -n -a /Applications/Emacs.app"))
+
 
 ;;; Session functions
 

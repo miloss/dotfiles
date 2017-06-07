@@ -74,6 +74,7 @@
 (global-set-key (kbd "C-M-g") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 (global-set-key (kbd "C-x M-m") 'magit-log-buffer-file)
+(global-set-key (kbd "C-x M-b") 'magit-blame)
 
 ;; Shortcuts to files
 (global-set-key (kbd "C-M-S-e")

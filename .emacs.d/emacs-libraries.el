@@ -60,6 +60,8 @@
         "*.robot"
         "*.ini"
         "*.conf"
+        "*.proto"
+        "*.dust"
         "*.json"))
 (setq ffip-prune-patterns
       '("*/.git/*"
@@ -72,6 +74,8 @@
         "*/karma_html/*"
         "*/build/*"
         "*/dist/*"
+        "*frontend/target/*"
+        "*frontend/lexemes-database/*"
         "*/.tmp/*"))
 ;(setq ffip-prefer-ido-mode t)
 
@@ -84,12 +88,15 @@
      (add-to-list 'grep-find-ignored-directories "build")
      (add-to-list 'grep-find-ignored-directories "coverage")
      (add-to-list 'grep-find-ignored-directories "karma_html")
-     (add-to-list 'grep-find-ignored-directories "node_modules")))
+     (add-to-list 'grep-find-ignored-directories "node_modules")
+     (add-to-list 'grep-find-ignored-directories "target/temp")
+     (add-to-list 'grep-find-ignored-directories "frontend/target")))
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.dust\\'" . js2-mode))
 (setq js2-strict-inconsistent-return-warning nil)
 ;(add-hook 'js2-mode-hook 'smart-tabs-mode-enable)
 ;(smart-tabs-advice js2-indent-line js2-basic-offset)
@@ -239,3 +246,7 @@
 ;(setq tss-jump-to-definition-key "C->")
 ;(setq tss-implement-definition-key "C-c i")
 ;(tss-config-default)
+
+;; Protobuf mode
+(require 'protobuf-mode)
+(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))

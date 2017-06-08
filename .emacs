@@ -2,6 +2,12 @@
 
 ;; Milos Popovic <the.elephant@gmail.com>
 
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'default-frame-alist '(width . 93))
 
@@ -23,16 +29,21 @@
  '(js-flat-functions t)
  '(js2-strict-missing-semi-warning nil)
  '(magit-rebase-arguments nil)
- '(package-archives
-   (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa-stable" . "http://stable.melpa.org/packages/"))))
+ '(package-selected-packages (quote (auto-complete magit)))
  '(safe-local-variable-values
    (quote
-    ((haskell-process-use-ghci . t)
+    ((eval when
+           (fboundp
+            (quote rainbow-mode))
+           (rainbow-mode 1))
+     (haskell-process-use-ghci . t)
      (haskell-indent-spaces . 4)
      (lexical-binding . t))))
  '(tool-bar-mode nil))
+
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
 
 (setq
   speedbar-show-unknown-files t
@@ -103,7 +114,7 @@
   (setq-default web-mode-css-indent-offset n) ; web-mode, css in html file
   (setq-default web-mode-code-indent-offset n) ; web-mode, js code in html file
   (setq-default css-indent-offset n))
-(my-setup-indent 2)
+(my-setup-indent 4)
 
 ;; Mac OS X
 (setq mac-command-modifier 'control)

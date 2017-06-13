@@ -46,6 +46,7 @@
         "*.sh"
         "*.service"
         "*.js"
+        "*.jsx"
         "*.ts"
         "*.coffee"
         "*.ejs"
@@ -112,6 +113,7 @@
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 
 ;; Haskell mode
 ;(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
@@ -227,8 +229,8 @@
     (js2-mode "{" "}" "/[*/]" nil))))
 
 ;; JSX mode
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
-(autoload 'jsx-mode "jsx-mode" "JSX mode" t)
+;(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
+;(autoload 'jsx-mode "jsx-mode" "JSX mode" t)
 
 ;; Neo Tree
 ;(global-set-key [f8] 'neotree-toggle)

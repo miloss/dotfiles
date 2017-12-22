@@ -240,8 +240,8 @@
     (js2-mode "{" "}" "/[*/]" nil))))
 
 ;; JSX mode
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
-(autoload 'jsx-mode "jsx-mode" "JSX mode" t)
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+(autoload 'rjsx-mode "rjsx-mode" "JSX mode" t)
 
 ;; Neo Tree
 (add-to-list 'load-path "/Users/milospopovic/.emacs.d/lisp/neotree")

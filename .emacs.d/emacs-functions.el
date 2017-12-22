@@ -14,7 +14,7 @@ emacs-how-to-delete-text-without-kill-ring"
 (defun popout-directory ()
   "Pops up a new OS window in current directory."
   (interactive)
-  (shell-command (concat "gnome-open " (file-name-directory buffer-file-name)))
+  (shell-command (concat "open " (file-name-directory buffer-file-name)))
   (message "Current directory opened"))
 
 (defun open-in-firefox ()
@@ -31,7 +31,8 @@ emacs-how-to-delete-text-without-kill-ring"
 
 (defun new-emacs ()
   (interactive)
-  (shell-command "open -n -a /Applications/Emacs.app"))
+  ;(shell-command "open -n -a /Applications/Emacs.app")
+  (shell-command "open -n -a /usr/local/Cellar/emacs-plus/25.2/Emacs.app"))
 
 
 ;;; Session functions
@@ -130,11 +131,16 @@ emacs-how-to-delete-text-without-kill-ring"
   (neotree-hide) ;(sr-speedbar-close)
   (delete-other-windows))
 
+(defun shell-in-current-frame ()
+  "Open new or existing shell in current frame"
+  (interactive)
+  (other-window -1)
+  (shell))
+
 (defun another-shell ()
   "Split window vertically and open shell below"
   (interactive)
   (split-window-below)
-  (other-window 1)
   (let ((current-prefix-arg 4))
     (call-interactively 'shell)))
 
@@ -202,6 +208,12 @@ emacs-how-to-delete-text-without-kill-ring"
   (grep-compute-defaults)
   (rgrep (grep-read-regexp) "*" desktop-dirname)
   (other-window 1))
+
+(defun rgrep-in-project-2 ()
+  "rgrep-in-project but without confirmation and stays in the same frame"
+  (interactive)
+  (grep-compute-defaults)
+  (rgrep (grep-read-regexp) "*" desktop-dirname))
 
 ;;; Shell tasks
 (defun run-shell-command (cmd)

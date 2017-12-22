@@ -44,6 +44,8 @@
         "*.el"
         "*.md"
         "*.sh"
+        "*.svg"
+        "*.png"
         "*.service"
         "*.js"
         "*.jsx"
@@ -63,20 +65,25 @@
         "*.conf"
         "*.proto"
         "*.dust"
+        "*.feature"
+        "*.eslintrc"
+        "*.eslintrc.js*"
         "*.json"))
 (setq ffip-prune-patterns
       '("*/.git/*"
         "*/.hooks/*"
         "*/.hgignore"
         "*/.emacs.desktop*"
+        "*/.nyc_output*"
         "*/node_modules/*"
         "*/bower_components/*"
         "*/coverage/*"
         "*/karma_html/*"
-        "*/build/*"
         "*/dist/*"
         "*frontend/target/*"
         "*frontend/lexemes-database/*"
+        "*data/repo/*"
+        "*data/html/*"
         "*/.tmp/*"))
 ;(setq ffip-prefer-ido-mode t)
 
@@ -86,12 +93,14 @@
      (add-to-list 'grep-find-ignored-files ".emacs.desktop")
      (add-to-list 'grep-find-ignored-directories ".tmp")
      (add-to-list 'grep-find-ignored-directories "dist")
-     (add-to-list 'grep-find-ignored-directories "build")
      (add-to-list 'grep-find-ignored-directories "coverage")
      (add-to-list 'grep-find-ignored-directories "karma_html")
      (add-to-list 'grep-find-ignored-directories "node_modules")
+     (add-to-list 'grep-find-ignored-directories "external-projects")
      (add-to-list 'grep-find-ignored-directories "target/temp")
-     (add-to-list 'grep-find-ignored-directories "frontend/target")))
+     (add-to-list 'grep-find-ignored-directories "frontend/target")
+     (add-to-list 'grep-find-ignored-directories "frontend/lexemes-database")
+     (add-to-list 'grep-find-ignored-directories "frontend/bin/yarn")))
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
@@ -187,6 +196,8 @@
 ;; Dockerfile mode
 (require 'dockerfile-mode)
 
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
+
 ;; Magit
 (require 'dash)
 (add-to-list 'load-path "~/.emacs.d/lisp/magit/lisp")
@@ -229,12 +240,12 @@
     (js2-mode "{" "}" "/[*/]" nil))))
 
 ;; JSX mode
-;(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
-;(autoload 'jsx-mode "jsx-mode" "JSX mode" t)
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . jsx-mode))
+(autoload 'jsx-mode "jsx-mode" "JSX mode" t)
 
 ;; Neo Tree
-;(global-set-key [f8] 'neotree-toggle)
-
+(add-to-list 'load-path "/Users/milospopovic/.emacs.d/lisp/neotree")
+(require 'neotree)
 (defun neotree-project-dir ()
   "Open NeoTree using the git root."
   (interactive)
@@ -252,3 +263,7 @@
 ;; Protobuf mode
 (require 'protobuf-mode)
 (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+
+;; Feature mode
+(require 'feature-mode)
+(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))

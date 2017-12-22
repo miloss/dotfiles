@@ -13,6 +13,7 @@
 (global-set-key (kbd "C-x M-n") 'new-emacs)
 (global-set-key (kbd "C-x M-r") 'rgrep)
 (global-set-key (kbd "C-x C-r") 'rgrep-in-project)
+(global-set-key (kbd "C-x C-t") 'rgrep-in-project-2)
 
 ;(global-set-key [s-left] 'windmove-left)
 ;(global-set-key [s-right] 'windmove-right)
@@ -29,9 +30,9 @@
 (global-set-key (kbd "C-x C-d") 'fd-desktop-change-dir)
 (global-set-key (kbd "C-x M-b") 'ido-switch-buffer-other-window)
 
-(global-set-key (kbd "M-p") 'sr-speedbar-toggle)
-(global-set-key (kbd "M-s") 'sr-speedbar-toggle)
-(global-set-key (kbd "C-x M-s") 'sr-speedbar-refresh-toggle)
+;(global-set-key (kbd "M-p") 'sr-speedbar-toggle)
+;(global-set-key (kbd "M-s") 'sr-speedbar-toggle)
+;(global-set-key (kbd "C-x M-s") 'sr-speedbar-refresh-toggle)
 (global-set-key (kbd "M-o") 'other-window)
 (global-set-key (kbd "M-i") 'other-other-window)
 (global-set-key (kbd "M-0") 'delete-window)
@@ -49,7 +50,8 @@
 (global-set-key (kbd "M-]") 'enlarge-window)
 
 (when (display-graphic-p)
-  (global-set-key (kbd "C-M-z") 'shell)
+  (global-set-key (kbd "C-M-z") 'shell-in-current-frame)
+  (global-set-key (kbd "M-z") 'shell-in-current-frame)
   (global-set-key (kbd "C-x M-z") 'another-shell)
   (global-set-key (kbd "C-z") nil)
   (global-set-key (kbd "M-?") nil))
@@ -61,6 +63,7 @@
 (global-set-key (kbd "C-x f") 'recentf-ido-find-file)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-i") 'idomenu)
+(global-set-key (kbd "M-k") 'ido-kill-buffer)
 
 ;; Multiple cursors
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -72,6 +75,7 @@
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-M-g") 'magit-status)
+(global-set-key (kbd "M-t") 'magit-status)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 (global-set-key (kbd "C-x M-m") 'magit-log-buffer-file)
 (global-set-key (kbd "C-x M-b") 'magit-blame)

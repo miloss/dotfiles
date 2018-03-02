@@ -1,13 +1,13 @@
-;;; js2-mode.el --- Improved JavaScript editing mode
+;;; js2-mode.el --- Improved JavaScript editing mode -*- lexical-binding: t -*-
 
-;; Copyright (C) 2009, 2011-2017  Free Software Foundation, Inc.
+;; Copyright (C) 2009, 2011-2018  Free Software Foundation, Inc.
 
 ;; Author: Steve Yegge <steve.yegge@gmail.com>
 ;;         mooz <stillpedant@gmail.com>
 ;;         Dmitry Gutov <dgutov@yandex.ru>
 ;; URL:  https://github.com/mooz/js2-mode/
 ;;       http://code.google.com/p/js2-mode/
-;; Version: 20170721
+;; Version: 20180301
 ;; Keywords: languages, javascript
 ;; Package-Requires: ((emacs "24.1") (cl-lib "0.5"))
 
@@ -2375,10 +2375,7 @@ NAME can be a Lisp symbol or string.  SYMBOL is a `js2-symbol'."
                (:include js2-scope)
                (:constructor make-js2-script-node (&key (type js2-SCRIPT)
                                                         (pos (js2-current-token-beg))
-                                                        len
-                                                        ;; FIXME: What are those?
-                                                        var-decls
-                                                        fun-decls)))
+                                                        len)))
   functions   ; Lisp list of nested functions
   regexps     ; Lisp list of (string . flags)
   symbols     ; alist (every symbol gets unique index)
@@ -7623,7 +7620,7 @@ For instance, processing a nested scope requires a parent function node."
   (let (result fn parent-qname p elem)
     (dolist (entry js2-imenu-recorder)
       ;; function node goes first
-      (cl-destructuring-bind (current-fn &rest (&whole chain head &rest _)) entry
+      (cl-destructuring-bind (current-fn &rest (&whole chain head &rest)) entry
         ;; Examine head's defining scope:
         ;; Pre-processed chain, or top-level/external, keep as-is.
         (if (or (stringp head) (js2-node-top-level-decl-p head))
@@ -11095,7 +11092,7 @@ and expression closure style is also supported
 
   { get foo() x, set foo(x) _x = x }
 
-POS is the start position of the `get' or `set' keyword.
+POS is the start position of the `get' or `set' keyword, if any.
 PROP is the `js2-name-node' representing the property name.
 TYPE-STRING is a string `get', `set', `*', or nil, indicating a found keyword."
   (let* ((type (or (cdr (assoc type-string '(("get" . GET)
@@ -11103,7 +11100,7 @@ TYPE-STRING is a string `get', `set', `*', or nil, indicating a found keyword."
                                              ("async" . ASYNC))))
                    'FUNCTION))
          result end
-         (pos (js2-current-token-beg))
+         (pos (or pos (js2-current-token-beg)))
          (_ (js2-must-match js2-LP "msg.no.paren.parms"))
          (fn (js2-parse-function 'FUNCTION_EXPRESSION pos
                                  (string= type-string "*")

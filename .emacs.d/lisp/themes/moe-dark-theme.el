@@ -21,7 +21,7 @@ Moe, moe, kyun!")
       (red-1 "#ef2929")  (red-2 "#dd0000")  (red-3 "#a40000") (red-4 "#5f0000")
       (white-1 "#c6c6c6") (white-2 "#c6c6c6") (white-3 "#b2b2b2") (black-1 "#a8a8a8") (black-2 "#8a8a8a")
       (black-2-5 "#6c6c6c") (black-3 "#4e4e4e") (black-4 "#3a3a3a") (black-5 "#303030") (black-6 "#000000")
-      (LIGHT_BG "#fdfde7") (white-0 "#ffffff")
+      (LIGHT_BG "#fdfde7") (white-0 "#eeeeee")
       (green-02 "#5fd700") (green-01 "#d7ff00") (green-0 "#d7ff5f") (green-00 "#d7ff87")
       (cyan-0 "#d7ffd7")
       (blue-01 "#c3c9f8") (blue-0 "#afd7ff") (blue-00 "#d7d7ff")
@@ -43,15 +43,17 @@ Moe, moe, kyun!")
 	       (:foreground ,white-1 :background ,black-5))
 	      (,class
 	       (:foreground ,white-1 :background ,black-5))))
-   `(cursor ((,class (:background ,white-1))))
+   `(cursor ((,class (:background ,white-0))))
 
    ;; Highlighting faces
    `(fringe ((,class (:foreground ,black-1 :background ,black-3))))
    `(linum ((,class (:foreground ,white-3 :background ,black-3))))
+   `(line-number ((,class (:foreground ,white-3 :background ,black-3))))
    `(linum-highlight-face ((,class (:background ,green-0 :foreground ,black-4))))
+   `(line-number-current-line ((,class (:background ,green-0 :foreground ,black-4))))
    `(highlight ((,class (:background ,black-3))))
-   `(hl-line ((,class (:background ,black-3))))
-   `(highlight-symbol-face ((,class (:background ,black-3))))
+   `(hl-line ((,class (:background ,black-4))))
+   `(highlight-symbol-face ((,class (:background ,green-5))))
    `(region ((,class (:foreground ,black-3 :background ,green-0))))
    `(secondary-selection ((,class (:background ,blue-3 :foreground ,white-0))))
    `(isearch ((,class (:foreground ,white-1 :background ,orange-3))))
@@ -60,7 +62,7 @@ Moe, moe, kyun!")
    `(show-paren-match ((,class (:background ,blue-3 :foreground nil))))
    `(header-line ((,class (:background ,blue-3 :foreground ,white-0))))
    `(help-argument-name ((,class (:foreground ,magenta-1 :italic t))))
-
+   `(eldoc-highlight-function-argument ((,class (:foreground ,green-01 :bold t :underline t :background ,green-5))))
    ;; Mode line & frames' faces
    `(mode-line ((,class (:box nil :background ,blue-0 :foreground ,blue-3))))
    `(mode-line-inactive ((,class (:box nil :background ,black-2-5 :foreground ,white-1))))
@@ -398,7 +400,7 @@ Moe, moe, kyun!")
    `(magit-blame-heading ((,class (:foreground ,white-1 :background ,black-3))))
    `(magit-blame-name ((,class (:foreground ,green-1 :background ,black-3))))
    `(magit-blame-summary ((,class (:foreground ,white-2 :background ,black-3))))
-   `(magit-branch-current ((,class (:foreground ,orange-4 :background ,orange-00 :bold t :underline t))))
+   `(magit-branch-current ((,class (:foreground ,white-0 :background ,orange-2 :bold t :underline nil))))
    `(magit-branch-local ((,class (:foreground ,green-4 :background ,green-00 :bold t :underline t))))
    `(magit-branch-remote ((,class (:foreground ,blue-3 :background ,blue-0 :bold t :underline t))))
    `(magit-cherry-equivalent ((,class (:foreground ,purple-2))))
@@ -665,16 +667,17 @@ Moe, moe, kyun!")
    `(mmm-code-submode-face ((,class (:background ,blue-00))))
    `(mmm-comment-submode-face ((,class (:background ,blue-0))))
    `(mmm-declaration-submode-face ((,class (:background ,cyan-1))))
-   `(mmm-default-submode-face ((,class (:background ,black-6))))
+   `(mmm-default-submode-face ((,class (:background nil))))
    `(mmm-delimiter-face ((,class (:background nil :foreground ,white-0))))
    `(mmm-init-submode-face ((,class (:background ,magenta-0))))
    `(mmm-output-submode-face ((,class (:background ,purple-00))))
    `(mmm-special-submode-face ((,class (:background ,green-00))))
 
-   ;; Clojure
+   ;; Clojure/Cider
    `(clojure-test-failure-face ((,class (:underline ,orange-2))))
    `(clojure-test-error-face ((,class (:underline ,red-2))))
    `(clojure-test-success-face ((,class (:underline ,green-3))))
+   `(cider-deprecated-face ((,class (:background ,red-4))))
 
    ;; Javascript
    `(js2-function-param-face ((,class (:foreground ,green-3))))
@@ -769,6 +772,30 @@ Moe, moe, kyun!")
    `(ido-subdir ((,class (:foreground ,blue-1 :bold t))))
    `(ido-virtual ((,class (:foreground ,magenta-3))))
 
+   ;; ivy-mode
+   `(ivy-current-match ((,class (:foreground ,orange-2 :bold t :inherit highlight))))
+   `(ivy-confirm-face ((,class (:foreground ,green-4 :background ,green-00 :bold t))))
+   `(ivy-subdir ((,class (:foreground ,blue-1 :bold t))))
+   `(ivy-virtual ((,class (:foreground ,magenta-3))))
+
+   `(ivy-minibuffer-match-face-1 ((,class (:background ,blue-1 :foreground ,white-0))))
+   `(ivy-minibuffer-match-face-2 ((,class (:bold t :background ,green-2 :foreground ,white-0))))
+   `(ivy-minibuffer-match-face-3 ((,class (:bold t :background ,magenta-2 :foreground ,white-0))))
+   `(ivy-minibuffer-match-face-4 ((,class (:bold t :background ,cyan-3 :foreground ,white-0))))
+
+   ;; swiper
+   `(swiper-match-face-1 ((,class (:background ,blue-1 :foreground ,white-0))))
+   `(swiper-match-face-2 ((,class (:bold t :background ,green-2 :foreground ,white-0))))
+   `(swiper-match-face-3 ((,class (:bold t :background ,magenta-2 :foreground ,white-0))))
+   `(swiper-match-face-4 ((,class (:bold t :background ,cyan-3 :foreground ,white-0))))
+   `(swiper-line-face ((,class (:foreground ,orange-2 :bold t :inherit highlight))))
+
+   ;; volatile-highlights
+   `(vhl/default-face ((,class (:foreground ,black-3 :background ,green-0))))
+
+   ;; notmuch
+   `(notmuch-search-unread-face ((,class (:weight bold))))
+
    ;; git-gutter (&-fringe)
    `(git-gutter:added ((,class (:foreground ,green-4 :background ,green-0 :bold t))))
    `(git-gutter:deleted ((,class (:foreground ,red-3 :background ,red-00 :bold t))))
@@ -859,7 +886,7 @@ Moe, moe, kyun!")
    `(tuareg-font-lock-interactive-error-face ((,class (:foreground ,red-3 :background ,red-00 :bold t))))
    `(tuareg-font-lock-interactive-output-face ((,class (:foreground ,blue-3))))
    `(tuareg-font-lock-multistage-face ((,class (:foreground ,blue-3 :background ,blue-0))))
-   `(tuareg-font-lock-operator-face ((,class (:foreground ,green-2 :background ,black-3 :bold t))))
+   `(tuareg-font-lock-operator-face ((,class (:foreground ,green-2 :bold t))))
 
    ;; CPerl
    `(cperl-array-face ((,class (:foreground ,blue-01 :background ,blue-3))))
@@ -904,18 +931,24 @@ Moe, moe, kyun!")
    ;; Hydra
    `(hydra-face-red ((,class (:foreground ,red-0))))
    `(hydra-face-blue ((,class (:foreground ,blue-1))))
-   `(hydra-face-amaranth ((,class (:foreground ,magenta-2)))))
+   `(hydra-face-amaranth ((,class (:foreground ,magenta-2))))
+
+   ;; rpm-spec-mode
+   `(rpm-spec-tag-face ((,class (:foreground ,blue-1))))
+   `(rpm-spec-obsolete-tag-face ((,class (:foreground ,white-0 :bold t :background ,red-2))))
+   `(rpm-spec-macro-face ((,class (:foreground ,yellow-2))))
+   `(rpm-spec-var-face ((,class (:foreground ,purple-1))))
+   `(rpm-spec-doc-face ((,class (:foreground ,magenta-2))))
+   `(rpm-spec-dir-face ((,class (:foreground ,green-2))))
+   `(rpm-spec-package-face ((,class (:foreground ,red-0))))
+   `(rpm-spec-ghost-face ((,class (:foreground ,red-0))))
+   `(rpm-spec-section-face ((,class (:foreground ,yellow-2)))))
 
   (custom-theme-set-variables
    'moe-dark
    `(ansi-color-names-vector [,black-5 ,red-0 ,green-0 ,yellow-1
                                        ,blue-1 ,purple-1 ,blue-0 ,white-1])))
 
-;; fix wrong default face under GUI version Emacs
-(if window-system
-    (progn
-      (set-background-color "#303030")
-      (set-foreground-color "#c6c6c6")))
 
 (setq moe-theme-which-enabled 'dark)
 

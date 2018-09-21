@@ -32,6 +32,8 @@
 (setq ac-auto-show-menu 0.2)
 (ac-config-default)
 
+(add-to-list 'ac-modes 'rjsx-mode)
+
 ;; Ido mode
 (ido-mode t)
 (setq ido-ignore-buffers

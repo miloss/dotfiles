@@ -32,6 +32,8 @@
 
 (require 'cl-lib)
 (require 'js2-mode)
+(eval-when-compile (require 'subr-x))
+(require 'newcomment)
 
 (defgroup rjsx-mode nil
   "Support for JSX."
@@ -49,7 +51,24 @@ parsing supports the magic `rjsx-electric-lt' and
 (define-derived-mode rjsx-mode js2-jsx-mode "RJSX"
   "Major mode for editing JSX files."
   :lighter ":RJSX"
-  :group 'rjsx-mode)
+  :group 'rjsx-mode
+  (setq-local comment-use-syntax nil)
+  (setq-local comment-start-skip "[[:space:]]*\\(//+\\|{?/\\*+\\)")
+  ;; \n is included to get arround `comment-normalize-vars' and `comment-only-p'
+  (setq-local comment-end-skip "\\(\\*+/}?[[:space:]]*\\)\n?\\|\n")
+  (setq-local comment-region-function 'rjsx-comment-region-function)
+  (setq-local uncomment-region-function 'rjsx-uncomment-region-function)
+  (setq-local comment-quote-nested-function 'rjsx-comment-quote-nested-function)
+  (setq-local indent-line-function 'rjsx-indent-line)
+  (setq-local indent-region-function 'rjsx-indent-region))
+
+;;;###autoload
+(define-minor-mode rjsx-minor-mode
+  "Minor mode for parsing JSX syntax into an AST."
+  :lighter " rjsx"
+  (if rjsx-minor-mode
+      (js2-minor-mode 1)
+    (js2-minor-mode 0)))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
@@ -58,7 +77,7 @@ parsing supports the magic `rjsx-electric-lt' and
   "Dispatch the xml parser based on variable `rjsx-mode' being active or not.
 This function is used to advise `js2-parse-xml-initializer' (ORIG-FUN) using
 the `:around' combinator.  JS2-PARSER is the original XML parser."
-  (if (eq major-mode 'rjsx-mode)
+  (if (or (eq major-mode 'rjsx-mode) rjsx-minor-mode)
       (rjsx-parse-top-xml)
     (apply orig-fun nil)))
 
@@ -82,6 +101,11 @@ the `:around' combinator.  JS2-PARSER is the original XML parser."
 (defface rjsx-text
   '((t . (:inherit font-lock-string-face)))
   "`rjsx-mode' face used to highlight JSX text."
+  :group 'rjsx-mode)
+
+(defface rjsx-tag-bracket-face
+  '((t . (:inherit default)))
+  "`rjsx-mode' face used to highlight `<', `/', and `>'."
   :group 'rjsx-mode)
 
 
@@ -125,8 +149,8 @@ the `:around' combinator.  JS2-PARSER is the original XML parser."
                                    name
                                    rjsx-props
                                    kids)))
-  name         ; AST node containing the parsed xml name
-  rjsx-props    ; linked list of AST nodes (both attributes and spreads)
+  name         ; AST node containing the parsed xml name or nil for fragments
+  rjsx-props   ; linked list of AST nodes (both attributes and spreads)
   kids         ; linked list of child xml nodes
   closing-tag) ; AST node with the tag closer
 
@@ -135,7 +159,8 @@ the `:around' combinator.  JS2-PARSER is the original XML parser."
 (js2--struct-put 'rjsx-node 'js2-printer 'rjsx-node-print)
 (defun rjsx-node-visit (ast callback)
   "Visit the `rjsx-node' children of AST, invoking CALLBACK on them."
-  (js2-visit-ast (rjsx-node-name ast) callback)
+  (let ((name (rjsx-node-name ast)))
+    (when name (js2-visit-ast name callback)))
   (dolist (prop (rjsx-node-rjsx-props ast))
     (js2-visit-ast prop callback))
   (dolist (prop (rjsx-node-kids ast))
@@ -146,7 +171,8 @@ the `:around' combinator.  JS2-PARSER is the original XML parser."
 (defun rjsx-node-print (node indent-level)
   "Print the `rjsx-node' NODE at indent level INDENT-LEVEL."
   (insert (js2-make-pad indent-level) "<")
-  (js2-print-ast (rjsx-node-name node) 0)
+  (let ((name-n (rjsx-node-name node)))
+   (when name-n (js2-print-ast name-n 0)))
   (dolist (attr (rjsx-node-rjsx-props node))
     (insert " ")
     (js2-print-ast attr 0))
@@ -162,10 +188,10 @@ the `:around' combinator.  JS2-PARSER is the original XML parser."
   "Return a string with NODE's opening tag including any namespace and member operations."
   (let ((name-n (rjsx-node-name node)))
     (cond
+     ((null name-n) "")                 ; fragment
      ((rjsx-member-p name-n) (rjsx-member-full-name name-n))
      ((rjsx-identifier-p name-n) (rjsx-identifier-full-name name-n))
-     ;; Otherwise it's either nil or an error. Either way, no name :(
-     (t ""))))
+     (t ""))))                          ; js2-error-node
 
 (defun rjsx-node-push-prop (n rjsx-prop)
   "Extend rjsx-node N's rjsx-props with js2-node RJSX-PROP.
@@ -190,7 +216,7 @@ Sets KID's parent to N."
                (:include js2-node (type rjsx-JSX-CLOSE))
                (:constructor nil)
                (:constructor make-rjsx-closing-tag (&key pos len name)))
-  name) ; A rjsx-identifier or rjsx-member node
+  name) ; An rjsx-identifier or rjsx-member node or nil for fragments
 
 (js2--struct-put 'rjsx-closing-tag 'js2-visitor 'rjsx-closing-tag-visit)
 (js2--struct-put 'rjsx-closing-tag 'js2-printer 'rjsx-closing-tag-print)
@@ -207,6 +233,7 @@ Sets KID's parent to N."
   "Return the string with N's fully-namespaced name, or just name if it's not namespaced."
   (let ((child (rjsx-closing-tag-name n)))
     (cond
+     ((null child) "")                  ; fragment
      ((rjsx-member-p child) (rjsx-member-full-name child))
      ((rjsx-identifier-p child) (rjsx-identifier-full-name child))
      (t ""))))
@@ -346,6 +373,14 @@ Sets KID's parent to N."
      (message ,@args)))
 
 
+(defvar rjsx-text-syntax-table
+  (let ((table (make-syntax-table (standard-syntax-table))))
+    ;; `js-indent-line' assumes that \n is not whitespace
+    ;; Since it's not a comment delimiter in JSX text, punctuation
+    ;; is the only other (semi) logical choice
+    (modify-syntax-entry ?\n "." table)
+    table))
+
 (js2-deflocal rjsx-in-xml nil "Variable used to track which xml parsing function is the outermost one.")
 
 (define-error 'rjsx-eof-while-parsing "RJSX: EOF while parsing")
@@ -363,6 +398,15 @@ error and return a `js2-error-node'."
           (js2-report-error "msg.syntax" nil beg len)
           (make-js2-error-node :pos beg :len len))))))
 
+(defsubst rjsx-record-tag-bracket-face ()
+  "Fontify the current token with `rjsx-tag-bracket-face'."
+  (js2-set-face (js2-current-token-beg) (js2-current-token-end) 'rjsx-tag-bracket-face 'record))
+
+(defsubst rjsx-record-token-class (cls)
+  "Record an 'rjsx-class text property with value CLS for the current token."
+  (js2-record-text-property (js2-current-token-beg) (js2-current-token-end)
+                            'rjsx-class cls))
+
 (defun rjsx-parse-top-xml ()
   "Parse a top level XML fragment.
 This is the entry point when ‘js2-parse-unary-expr’ finds a '<' character"
@@ -373,43 +417,51 @@ This is the entry point when ‘js2-parse-unary-expr’ finds a '<' character"
 
 (defun rjsx-parse-xml ()
   "Parse a complete xml node from start to end tag."
-  (let ((pn (make-rjsx-node)) self-closing name-n name-str child child-name-str)
+  (rjsx-record-token-class '<)
+  (rjsx-record-tag-bracket-face)
+  (let ((pn (make-rjsx-node)) self-closing name-n name-str child child-name-str is-fragment)
     (rjsx-maybe-message "Starting rjsx-parse-xml after <")
     (if (setq child (rjsx-parse-empty-tag))
         child
-      (setf (rjsx-node-name pn) (setq name-n (rjsx-parse-member-or-ns 'rjsx-tag)))
-      (if (js2-error-node-p name-n)
-          (progn (rjsx-maybe-message "could not parse tag name")
-                 (make-js2-error-node :pos (js2-node-pos pn) :len (1+ (js2-node-len name-n))))
-        (js2-node-add-children pn name-n)
-        (setq name-str (if (rjsx-member-p name-n) (rjsx-member-full-name name-n)
-                         (rjsx-identifier-full-name name-n)))
-        (if js2-highlight-external-variables
-            (let ((name-node (rjsx-identifier-name
-                              (if (rjsx-member-p name-n)
-                                  (car (rjsx-member-idents name-n))
-                                name-n)))
-                  (case-fold-search nil))
-              (when (string-match-p "^[[:upper:]]" (js2-name-node-name name-node))
-                (js2-record-name-node name-node))))
+      (if (eq (js2-peek-token) js2-GT)
+          (setq is-fragment t)
+        (setf (rjsx-node-name pn) (setq name-n (rjsx-parse-member-or-ns 'rjsx-tag)))
+        (if (js2-error-node-p name-n)
+            (progn (rjsx-maybe-message "could not parse tag name")
+                   (make-js2-error-node :pos (js2-node-pos pn) :len (1+ (js2-node-len name-n))))
+          (js2-node-add-children pn name-n)
+          (if js2-highlight-external-variables
+              (let ((name-node (rjsx-identifier-name
+                                (if (rjsx-member-p name-n)
+                                    (car (rjsx-member-idents name-n))
+                                  name-n)))
+                    (case-fold-search nil))
+                (when (string-match-p "^[[:upper:]]" (js2-name-node-name name-node))
+                  (js2-record-name-node name-node)))))
         (rjsx-maybe-message "cleared tag name: '%s'" name-str)
         ;; Now parse the attributes
         (rjsx-parse-attributes pn)
-        (rjsx-maybe-message "cleared attributes")
+        (rjsx-maybe-message "cleared attributes"))
+      (setq name-str (rjsx-node-opening-tag-name pn))
+      (progn
         ;; Now parse either a self closing tag or the end of the opening tag
         (rjsx-maybe-message "next type: `%s'" (js2-peek-token))
         (if (setq self-closing (js2-match-token js2-DIV))
             (progn
-              (js2-record-text-property (js2-current-token-beg) (js2-current-token-end)
-                                        'rjsx-class 'self-closing-slash)
+              (rjsx-record-token-class 'self-closing-slash)
+              (rjsx-record-tag-bracket-face)
               ;; TODO: How do we un-mark old slashes?
-              (js2-must-match js2-GT "msg.no.gt.after.slash"
-                                   (js2-node-pos pn) (- (js2-current-token-end) (js2-node-pos pn))))
-          (js2-must-match js2-GT "msg.no.gt.in.opener" (js2-node-pos pn) (js2-node-len pn)))
+              (when (js2-must-match js2-GT "msg.no.gt.after.slash"
+                                    (js2-node-pos pn) (- (js2-current-token-end) (js2-node-pos pn)))
+                (rjsx-record-token-class '>)
+                (rjsx-record-tag-bracket-face)))
+          (when (js2-must-match js2-GT "msg.no.gt.in.opener" (js2-node-pos pn) (js2-node-len pn))
+            (rjsx-record-token-class '>)
+            (rjsx-record-tag-bracket-face)))
         (rjsx-maybe-message "cleared opener closer, self-closing: %s" self-closing)
         (if self-closing
             (setf (js2-node-len pn) (- (js2-current-token-end) (js2-node-pos pn)))
-          (while (not (rjsx-closing-tag-p (setq child (rjsx-parse-child))))
+          (while (not (rjsx-closing-tag-p (setq child (rjsx-parse-child is-fragment))))
             ;; rjsx-parse-child calls our scanner, which always moves
             ;; forward at least one character. If it hits EOF, it
             ;; signals to our caller, so we don't have to worry about infinite loops here
@@ -703,16 +755,19 @@ parse."
     pn))
 
 
-(defun rjsx-parse-child ()
+(defun rjsx-parse-child (expect-fragment)
   "Parse an XML child node.
 Child nodes include plain (unquoted) text, other XML elements,
-and {}-bracketed expressions.  Return the parsed child."
+and {}-bracketed expressions.  Return the parsed child.
+
+EXPECT-FRAGMENT if t, indicates that `</>' should be parsed
+as a fragment closing node, and not as an empty tag."
   (let ((tt (rjsx-get-next-xml-token)))
     (rjsx-maybe-message "child type `%s'" tt)
     (cond
      ((= tt js2-LT)
       (rjsx-maybe-message "xml-or-close")
-      (rjsx-parse-xml-or-closing-tag))
+      (rjsx-parse-xml-or-closing-tag expect-fragment))
 
      ((= tt js2-LC)
       (rjsx-maybe-message "parsing expression { %s" (js2-peek-token))
@@ -722,7 +777,7 @@ and {}-bracketed expressions.  Return the parsed child."
       (rjsx-maybe-message "text node: '%s'" (js2-current-token-string))
       (js2-set-face (js2-current-token-beg) (js2-current-token-end) 'rjsx-text 'record)
       (js2-record-text-property (js2-current-token-beg) (js2-current-token-end)
-                                'syntax-table (standard-syntax-table))
+                                'syntax-table rjsx-text-syntax-table)
       (make-rjsx-text :value (js2-current-token-string)))
 
      ((= tt js2-ERROR)
@@ -730,20 +785,28 @@ and {}-bracketed expressions.  Return the parsed child."
 
      (t (error "Unexpected token type: %s" (js2-peek-token))))))
 
-(defun rjsx-parse-xml-or-closing-tag ()
+(defun rjsx-parse-xml-or-closing-tag (expect-fragment)
   "Parse a JSX tag, which could be a child or a closing tag.
 Return the parsed child, which is a `rjsx-closing-tag' if a
-closing tag was parsed."
+closing tag was parsed.
+
+EXPECT-FRAGMENT if t, indicates that `</>' should be parsed
+as a fragment closing node, and not as an empty tag."
   (let ((beg (js2-current-token-beg)) pn)
-    (if (setq pn (rjsx-parse-empty-tag))
+    (rjsx-record-token-class '<)
+    (rjsx-record-tag-bracket-face)
+    (if (and (not expect-fragment) (setq pn (rjsx-parse-empty-tag)))
         pn
       (if (js2-match-token js2-DIV)
-          (progn (setq pn (make-rjsx-closing-tag :pos beg
-                                                 :name (rjsx-parse-member-or-ns 'rjsx-tag)))
-                 (js2-node-add-children pn (rjsx-closing-tag-name pn))
-                 (if (js2-must-match js2-GT "msg.no.gt.in.closer" beg (- (js2-current-token-end) beg))
-                     (rjsx-maybe-message "parsed closing tag")
-                   (rjsx-maybe-message "missing closing `>'"))
+          (progn (rjsx-record-tag-bracket-face)
+                 (if (and expect-fragment (eq (js2-peek-token) js2-GT))
+                     (setq pn (make-rjsx-closing-tag :pos beg))
+                   (setq pn (make-rjsx-closing-tag :pos beg
+                                                   :name (rjsx-parse-member-or-ns 'rjsx-tag)))
+                   (js2-node-add-children pn (rjsx-closing-tag-name pn)))
+                 (when (js2-must-match js2-GT "msg.no.gt.in.closer" beg (- (js2-current-token-end) beg))
+                   (rjsx-record-token-class '>)
+                   (rjsx-record-tag-bracket-face))
                  (setf (js2-node-len pn) (- (js2-current-token-end) beg))
                  pn)
         (rjsx-maybe-message "parsing a child XML item")
@@ -824,7 +887,7 @@ inserts `</>' and places the cursor inside the new tag."
         (insert (make-string n ?<))
       (if (save-excursion
             (forward-comment most-negative-fixnum)
-            (skip-syntax-backward " ")
+            (skip-chars-backward "\n\r")
             (or (= (point) (point-min))
                 (memq (char-before) (append "=(?:>}&|{," nil))
                 (let ((start (- (point) 6)))
@@ -835,6 +898,15 @@ inserts `</>' and places the cursor inside the new tag."
         (insert "<"))))
 
 (define-key rjsx-mode-map "<" 'rjsx-electric-lt)
+
+(defun rjsx-expand-self-closing-tag (node)
+  "Expand NODE into a balanced tag.
+Assumes NODE is self-closing `rjsx-node', and that point is at
+the self-closing slash."
+  (delete-char 1)
+  (search-forward ">")
+  (save-excursion
+    (insert "</" (rjsx-node-opening-tag-name node) ">")))
 
 (defun rjsx-electric-gt (n)
   "Insert a context-sensitive greater-than sign.
@@ -849,11 +921,7 @@ the tags."
       (insert (make-string n ?>))
     (let ((node (rjsx--tag-at-point)))
       (if node
-          (progn
-            (delete-char 1)
-            (search-forward ">")
-            (save-excursion
-              (insert "</" (rjsx-node-opening-tag-name node) ">")))
+          (rjsx-expand-self-closing-tag node)
         (insert (make-string n ?>))))))
 
 (define-key rjsx-mode-map ">" 'rjsx-electric-gt)
@@ -870,11 +938,7 @@ slash and inserts a matching end-tag."
 	(delete-char n killflag))
     (let ((node (rjsx--tag-at-point)))
       (if node
-          (progn
-            (delete-char 1)
-            (search-forward ">" )
-            (save-excursion
-              (insert "</" (rjsx-node-opening-tag-name node) ">")))
+          (rjsx-expand-self-closing-tag node)
         (delete-char 1)))))
 
 (define-key rjsx-mode-map (kbd "C-d") 'rjsx-delete-creates-full-tag)
@@ -883,20 +947,423 @@ slash and inserts a matching end-tag."
   "Prompt for a new name and modify the tag at point.
 NEW-NAME is the name to give the tag."
   (interactive "sNew tag name: ")
-  (let ((tag (rjsx--tag-at-point)) closer)
-    (if tag
-        (let* ((head (rjsx-node-name tag))
-               (tail (when (setq closer (rjsx-node-closing-tag tag)) (rjsx-closing-tag-name closer)))
-               beg end)
-          (dolist (part (if tail (list tail head) (list head)))
-            (setq beg (js2-node-abs-pos part)
-                  end (+ beg (js2-node-len part)))
-            (delete-region beg end)
-            (save-excursion (goto-char beg) (insert new-name)))
-          (js2-reparse))
-      (message "No JSX tag found at point"))))
+  (let* ((tag (rjsx--tag-at-point))
+         (closer (and tag (rjsx-node-closing-tag tag))))
+    (cond
+     ((null tag) (message "No JSX tag found at point"))
+     ((null (rjsx-node-name tag))       ; fragment
+      (cl-assert closer nil "Fragment has no closing-tag")
+      (save-excursion
+        (goto-char (+ 2 (js2-node-abs-pos closer)))
+        (insert new-name)
+        (goto-char (1+ (js2-node-abs-pos tag)))
+        (insert new-name))
+      (js2-reparse))
+     (t
+      (let* ((head (rjsx-node-name tag))
+             (tail (when closer (rjsx-closing-tag-name closer)))
+             beg end)
+        (dolist (part (if tail (list tail head) (list head)))
+          (setq beg (js2-node-abs-pos part)
+                end (+ beg (js2-node-len part)))
+          (delete-region beg end)
+          (save-excursion (goto-char beg) (insert new-name)))
+        (js2-reparse))))))
 
 (define-key rjsx-mode-map (kbd "C-c C-r") 'rjsx-rename-tag-at-point)
+
+
+
+;; Utilities
+
+(defun rjsx-ancestor (node predicate)
+  "Find an ancestor of NODE satisfying PREDICATE.
+
+Search upwards from the parent of NODE for an ancestor where
+PREDICATE returns t.  Returns nil if no ancestor satisfies
+PREDICATE."
+  (let ((ancestor (js2-node-parent node)))
+    (while (and ancestor
+                (not (funcall predicate ancestor)))
+      (setq ancestor (js2-node-parent ancestor)))
+    ancestor))
+
+
+
+;; Comment handling
+
+(defun rjsx-comment-region-function (beg end &optional arg)
+  (js2-mode-wait-for-parse
+   (lambda ()
+     (let* ((node (js2-node-at-point beg))
+            (in-jsx (or (rjsx-node-p node)
+                        (rjsx-ancestor node 'rjsx-node-p)))
+            (use-jsx-comment (and (rjsx-node-p (js2-node-parent node))
+                                  (or (rjsx-text-p node)
+                                      (and (rjsx-node-p node)
+                                           (= (js2-node-abs-pos node) beg))))))
+       (cond (use-jsx-comment
+              (let ((comment-start "{/*")
+                    (comment-end "*/}"))
+                (comment-normalize-vars)
+                (comment-region-default beg end arg)))
+             (in-jsx
+              (let ((comment-start "/*")
+                    (comment-end "*/"))
+                (comment-normalize-vars)
+                (if (rjsx-wrapped-expr-p node)
+                    (if (js2-empty-expr-node-p (rjsx-wrapped-expr-child node))
+                        (let ((comment-start "{/*")
+                              (comment-end "*/}"))
+                          (comment-normalize-vars)
+                          (comment-region-default beg end arg))
+                      (comment-region-default (1+ beg) (1- end) arg))
+                  (comment-region-default beg end arg))))
+             (t (comment-region-default beg end arg)))))))
+
+(defun rjsx-maybe-unwrap-expr (beg end)
+  (save-excursion
+    (save-restriction
+      (js2-reparse)
+      (goto-char beg)
+      (skip-chars-forward "[:space:]\n" end)
+      (let* ((node (js2-node-at-point (point)))
+             (parent (js2-node-parent node)))
+        (when (and parent
+                   (rjsx-wrapped-expr-p parent)
+                   (rjsx-node-p (js2-node-parent parent))
+                   (or (rjsx-text-p node) (rjsx-node-p node)))
+          (let* ((expr-start (js2-node-abs-pos parent))
+                 (expr-end (+ expr-start (js2-node-len parent)))
+                 (body-start (1+ expr-start))
+                 (body-end (1- expr-end))
+                 (body-length (- body-end body-start)))
+            (when (and (comment-only-p body-start beg)
+                       (comment-only-p end body-end))
+              (goto-char expr-start)
+              (delete-char 1)
+              (forward-char body-length)
+              (delete-char 1))))))))
+
+(defun rjsx-uncomment-region-function (beg end &optional _)
+  (js2-mode-wait-for-parse
+   (lambda ()
+     (goto-char beg)
+     (setq end (copy-marker end))
+     (let (cs ts te ce matched-start)
+       ;; find comment start
+       (while (and (<= (point) end)
+                   (setq matched-start
+                         (and (re-search-forward comment-start-skip end t 1)
+                              (match-string-no-properties 0))))
+         ;; delete comment-start
+         (setq cs (match-beginning 1))
+         (setq ts (match-end 1))
+         (goto-char cs)
+         (delete-region cs ts)
+
+         ;; delete comment-padding start
+         (when (and comment-padding (looking-at (regexp-quote comment-padding)))
+           (delete-region (point) (+ (point) (length comment-padding))))
+
+         ;; find comment end
+         (when (re-search-forward (if (string-match "//+" matched-start) "\n" "\\*/}?") end t 1)
+           (setq te (or (match-beginning 1) (match-beginning 0)))
+           (setq ce (or (match-end 1) (match-end 0)))
+           (goto-char te)
+
+           ;; delete commend-end if it's not a newline
+           (unless (string= "\n" (match-string-no-properties 0))
+             (delete-region te ce)
+
+             ;; delete comment-padding end
+             (when comment-padding
+               (backward-char (length comment-padding))
+               (when (looking-at (regexp-quote comment-padding))
+                 (delete-region (point) (+ (point) (length comment-padding))))))
+
+           ;; unescape inner comments if any
+           (save-restriction
+             (narrow-to-region cs (point))
+             (comment-quote-nested "{/*" "*/}" t)))))
+
+     (rjsx-maybe-unwrap-expr beg end)
+
+     (set-marker end nil))))
+
+(defun rjsx-comment-quote-nested-function (_ __ unp)
+  (let ((re (concat "\\*\\(\\\\" (if unp "+" "*") "\\)/}?"
+                    "\\|"
+                    "{?/\\(\\\\" (if unp "+" "*") "\\)\\*")))
+    (goto-char (point-min))
+    (while (re-search-forward re (point-max) t 1)
+      (let ((ceme (match-end 1))
+            (csme (match-end 2)))
+        (goto-char (or ceme csme))
+        (if (and unp (>= (length (or (match-string-no-properties 1)
+                                     (match-string-no-properties 2)))
+                         1))
+            (delete-char -1)
+          (insert "\\"))))))
+
+;;;###autoload
+(defun rjsx-comment-dwim (arg)
+  "RJSX implementation of `comment-dwim'. If called on a region,
+this function delegates to `comment-or-uncomment-region'. If the
+point is not in a JSX context, it delegates to the
+`comment-dwim', otherwise it will comment the JSX AST node at
+point using the apppriate comment delimiters.
+
+For example: If point is on a JSX attribute or JSX expression, it
+will comment the entire attribute using \"/* */\". , otherwise if
+it's on a descendent JSX Element, it will use \"{/* */}\"
+instead."
+  (interactive "*P")
+  (js2-mode-wait-for-parse
+   (lambda ()
+     (if (use-region-p)
+         (comment-or-uncomment-region (region-beginning) (region-end) arg)
+       (save-excursion
+         (when (looking-at "[[:space:]]")
+           (forward-whitespace 1))
+         (let ((node (js2-node-at-point)))
+           (cond
+            ;; If inside a regular JS comment node, uncomment the node
+            ((js2-comment-at-point)
+             (uncomment-region (js2-node-abs-pos node) (js2-node-abs-end node)))
+            ;; If looking at a commented JSXAttribute value, forward one char to
+            ;; uncomment the body
+            ((and (looking-at comment-start-skip)
+                  (looking-at "{")
+                  (rjsx-attr-p (js2-node-parent node)))
+             (forward-char 1)
+             (rjsx-comment-dwim arg))
+            ;; If the entire line is a comment, uncomment it
+            ((and (comment-only-p (point) (line-end-position))
+                  (not (looking-at "[[:space:]]*$")))
+             (uncomment-region (point) (line-end-position)))
+            ;; If looking at JSXText, comment the current line
+            ((rjsx-text-p node)
+             (let ((comment-start "{/*")
+                   (comment-end "*/}"))
+               (comment-line 1)))
+            ;; If looking at a JSXAttribute or a JSXSpreadAttribute, comment the
+            ;; entire attribute with C-style comment
+            ((or (rjsx-spread-p node)
+                 (rjsx-ancestor node 'rjsx-spread-p)
+                 (rjsx-attr-p node)
+                 (and (js2-name-node-p node)
+                      (rjsx-identifier-p (js2-node-parent node))
+                      (rjsx-attr-p (js2-node-parent (js2-node-parent node))))
+                 (and (rjsx-identifier-p node)
+                      (rjsx-attr-p (js2-node-parent node)))
+                 (and (js2-string-node-p node)
+                      (rjsx-attr-p (js2-node-parent node))))
+             (let ((node (or (and (rjsx-spread-p node) node)
+                             (rjsx-ancestor node 'rjsx-spread-p)
+                             (and (rjsx-attr-p node) node)
+                             (rjsx-ancestor node 'rjsx-attr-p)))
+                   (comment-start "/*")
+                   (comment-end "*/"))
+               (comment-region
+                (js2-node-abs-pos node)
+                (js2-node-abs-end node) arg)))
+            ;; If looking at a JSXElement or JSXFragment, comment the entire
+            ;; node with JSX comment if it's a child of one of the above,
+            ;; otherwise just comment with C-style comment.
+            ((or (rjsx-node-p node)
+                 (rjsx-closing-tag-p node)
+                 (rjsx-member-p node)
+                 (rjsx-ancestor node 'rjsx-member-p))
+             (let* ((node (or (and (rjsx-node-p node) node)
+                              (rjsx-ancestor node 'rjsx-node-p)))
+                    (parent-node-p (rjsx-node-p (js2-node-parent node)))
+                    (closing (rjsx-node-closing-tag node))
+                    (comment-start (if parent-node-p "{/*" "/*"))
+                    (comment-end (if parent-node-p "*/}" "*/")))
+               (comment-region
+                (js2-node-abs-pos node)
+                (js2-node-abs-end (or closing node)) arg)))
+            ;; If looking at a JSX {expression} or is inside a JSX expression,
+            ;; comment the body with regular C-style comment. If the body is
+            ;; already commented, uncomment it. If on a multi line JSX
+            ;; expression, just comment the line.
+            ((or (rjsx-wrapped-expr-p node)
+                 (rjsx-ancestor node 'rjsx-wrapped-expr-p))
+             (let* ((expr (or (and (rjsx-wrapped-expr-p node) node)
+                              (rjsx-ancestor node 'rjsx-wrapped-expr-p)))
+                    ;; Can only happen as a child of an element or fragment, an
+                    ;; empty JSX expression attribute value will result in an
+                    ;; error node
+                    (expr-empty (js2-empty-expr-node-p (rjsx-wrapped-expr-child expr)))
+                    (body-start (1+ (js2-node-abs-pos expr)))
+                    (body-end (1- (js2-node-abs-end expr)))
+                    (expr-child-of-node (rjsx-node-p (js2-node-parent expr))))
+               ;; If the body is all comment, uncomment it, otherwise if it's
+               ;; empty, wrap it with a JSX comment
+               (if (and expr-child-of-node expr-empty)
+                   (if (or (= (1+ (js2-node-abs-pos expr)) (js2-node-abs-end expr)) ;; {}
+                           (string-blank-p (buffer-substring-no-properties body-start body-end)))
+                       (let ((comment-start "{/*")
+                             (comment-end "*/}"))
+                         (comment-region (js2-node-abs-pos expr) (js2-node-abs-end expr) arg))
+                     (when (comment-only-p body-start body-end)
+                       (uncomment-region body-start body-end arg)))
+                 ;; If in a multi-line JSX expression, comment the line
+                 (if (> (count-lines body-start body-end) 1)
+                     (comment-dwim arg)
+                   ;; Otherwise comment the entire body
+                   (let ((comment-start "/*")
+                         (comment-end "*/"))
+                     (comment-region body-start body-end arg))))))
+            ;; Otherwise just delegate to (comment-dwim)
+            (t (comment-dwim arg)))))))))
+
+(define-key rjsx-mode-map [remap comment-dwim] 'rjsx-comment-dwim)
+
+
+
+;; Indentation
+
+(defvar-local rjsx--indent-region-p nil
+  "t when `indent-region' is running.")
+
+(defvar-local rjsx--indent-running-offset 0
+  "Running offset to add to the node POS at the beginning of
+every line during `indent-region' so we don't have to reparse
+after indenting every line to update the AST node positions.")
+
+(defvar-local rjsx--indent-line-columns nil
+  "A list of indent columns on a per-line basis. The car is the
+  indent column of the last line, cadr the indent column of the
+  second-to-last line and so on...")
+
+(defun rjsx--indent-update-state (origin)
+  "If `rjsx--indent-region-p' is non-nil, updates
+`rjsx--indent-running-offset' by adding to it the offset between
+point and ORIGIN, and prepend the current column to
+`rjsx--indent-line-columns'."
+  (when rjsx--indent-region-p
+    (let ((offset (- (point) origin)))
+      (setq rjsx--indent-running-offset
+            (+ rjsx--indent-running-offset offset)
+            rjsx--indent-line-columns
+            (cons (current-column) rjsx--indent-line-columns)))))
+
+(defmacro rjsx-indent-with-spaces (cur-pos &rest body)
+  "Run indentation commands BODY with `indent-tabs-mode' set to
+nil and update indentation state is `indent-region' is running."
+  `(progn
+     (let ((indent-tabs-mode nil))
+       ,@body)
+     (rjsx--indent-update-state ,cur-pos)))
+
+(defvar-local rjsx--indent-self-closing-node-line-number-table
+  (make-hash-table)
+  "Table used to look up the line number of the beginning
+  position of a self-closing node during `indent-region'.")
+
+(defun rjsx--indent-self-closing-node-line-number-table-put (node)
+  (when (and (not (gethash node rjsx--indent-self-closing-node-line-number-table))
+             (rjsx-node-p node)
+             (not (rjsx-node-closing-tag node)))
+    (puthash node (line-number-at-pos) rjsx--indent-self-closing-node-line-number-table)))
+
+(defun rjsx-indent-line ()
+  "Similar to `js-jsx-indent-line', but fixes indentation bug
+with JSXElement after a JSX expression and arrow function. In
+addition, the > of a multi-line open tag and the /> of a
+multi-line self-closing tag are aligned to the beginning <. This
+function also ensures everything inside a JSX context is indented
+according to `js-indent-level' using spaces, this is due to the
+limitation of `sgml-indent-line' not being able to indent with
+tabs.
+
+Fixes:
+- https://github.com/mooz/js2-mode/issues/490
+- https://github.com/mooz/js2-mode/issues/482
+- https://github.com/mooz/js2-mode/issues/462
+- https://github.com/mooz/js2-mode/issues/451
+"
+  (unless rjsx--indent-region-p
+    (js2-reparse))
+
+  (let* ((sgml-basic-offset js-indent-level) ;; `sgml-indent-line' can only indent by spaces
+         (cur-pos (save-excursion (back-to-indentation) (point)))
+         (cur-char (char-after cur-pos))
+         (node (js2-node-at-point (- cur-pos rjsx--indent-running-offset))))
+    (cond
+     ((rjsx-node-p node)
+      (when rjsx--indent-region-p
+        (rjsx--indent-self-closing-node-line-number-table-put node))
+      (cond
+       ;; Top-level tag
+       ((not (rjsx-node-p (js2-node-parent node)))
+        ;; Prevent `js-indent-line' from treating the leading `<' as a continued expression
+        (cl-letf (((symbol-function #'js--continued-expression-p) 'ignore))
+          (rjsx-indent-with-spaces cur-pos (js-indent-line))))
+       ;; Align the /> of a multi-line self-closing tag
+       ((and (not (rjsx-node-closing-tag node))
+             (save-excursion (goto-char cur-pos) (looking-at-p "/[[:space:]]*>")))
+        (rjsx-indent-with-spaces
+         cur-pos
+         (indent-line-to
+          (let ((i (1- (- (line-number-at-pos)
+                          (if rjsx--indent-region-p
+                              (gethash node rjsx--indent-self-closing-node-line-number-table)
+                            (line-number-at-pos (js2-node-abs-pos node)))))))
+            (or (nth i rjsx--indent-line-columns)
+                (save-excursion
+                  (goto-char (js2-node-abs-pos node))
+                  (current-column)))))))
+       ;; Fix `sgml-calculate-indent''s issue with not aligning the ">" on
+       ;; a multi-line open tag
+       ((and (rjsx-node-p (js2-node-parent node))
+             (char-equal ?> cur-char))
+        (rjsx-indent-with-spaces cur-pos (js-indent-line)))
+       ;; Get around `js-indent-line' bug with not aligning JSXElement sibling
+       ;; after a JSX expression.
+       ((rjsx-wrapped-expr-p
+         (let* ((parent (js2-node-parent node))
+                (children (cl-loop for kid in (rjsx-node-kids parent)
+                                   if (or (not (rjsx-text-p kid))
+                                          (not (string-blank-p (rjsx-text-value kid))))
+                                   collect kid))
+                head)
+           ;; Look for the preceeding non-text node or non-blank text node
+           (while (and (setq head (car children) children (cdr children))
+                       (not (eq (car children) node))))
+           (if children head nil)))
+        (rjsx-indent-with-spaces cur-pos (js-indent-line)))
+       (t
+        (rjsx-indent-with-spaces cur-pos (js--as-sgml (sgml-indent-line))))))
+     ;; Anything that looks like JSX but doesn't need special handling
+     ((or (rjsx-closing-tag-p node)
+          (and (js2-name-node-p node)
+               (rjsx-identifier-p (js2-node-parent node))
+               (rjsx-attr-p (js2-node-parent (js2-node-parent node))))
+          (rjsx-spread-p node)
+          (rjsx-text-p node)
+          (rjsx-wrapped-expr-p node))
+      (rjsx-indent-with-spaces cur-pos (js--as-sgml (sgml-indent-line))))
+     ;; Inside JSX expression or looking at the end of it
+     ((rjsx-ancestor node #'rjsx-wrapped-expr-p)
+      (if (memq cur-char '(?\[ ?\] ?\) ?\} ?, ?\;))
+          (rjsx-indent-with-spaces cur-pos (js-indent-line))
+        (rjsx-indent-with-spaces cur-pos (js--expression-in-sgml-indent-line))))
+     ;; Outside of JSX context
+     (t
+      (js-indent-line)
+      (rjsx--indent-update-state cur-pos)))))
+
+(defun rjsx-indent-region (start end)
+  (js2-mode-wait-for-parse
+   (lambda ()
+     (let ((rjsx--indent-region-p t)
+           (rjsx--indent-running-offset 0)
+           (rjsx--indent-line-columns nil)
+           (rjsx--indent-self-closing-node-line-number-table (make-hash-table)))
+       (js2-indent-region start end)))))
 
 
 (provide 'rjsx-mode)

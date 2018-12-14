@@ -74,6 +74,7 @@ Desktop is defined as the first directory containing an `.emacs.desktop' file."
     (setq fd-desktop-name (upcase (file-name-nondirectory (directory-file-name dirpath))))
     (message (concat "Desktop read from " dirpath))
     (setq fd-desktop-path dirpath)
+    (setq ffip-project-root dirpath)
     (if (not (file-exists-p (concat dirpath "/.emacs.desktop")))
         (dired dirpath))))
 

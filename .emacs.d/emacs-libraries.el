@@ -61,6 +61,7 @@
         "*.xml"
         "*.js"
         "*.py"
+        "*.rb"
         "*.txt"
         "*.robot"
         "*.ini"
@@ -70,6 +71,7 @@
         "*.feature"
         "*.eslintrc"
         "*.eslintrc.js*"
+        "*.re*"
         "*.json"))
 (setq ffip-prune-patterns
       '("*/.git/*"
@@ -86,7 +88,11 @@
         "*frontend/lexemes-database/*"
         "*data/repo/*"
         "*data/html/*"
+        "*.min.css"
+        "*.min.js"
         "*/.tmp/*"))
+(setq ffip-match-path-instead-of-filename t)
+;(setq ffip-project-root "~/projs/PROJECT_DIR")
 ;(setq ffip-prefer-ido-mode t)
 
 ;; rgrep
@@ -201,14 +207,18 @@
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
 
 ;; Magit
-(require 'dash)
-(add-to-list 'load-path "~/.emacs.d/lisp/magit/lisp")
-(require 'magit)
+;(require 'dash)
+;(require 'with-editor)
+;(require 'magit-popup)
+;(require 'ghub)
+;(add-to-list 'load-path "~/.emacs.d/lisp/magit/lisp")
+;(require 'magit)
+
 (setq git-commit-summary-max-length 70)
-(with-eval-after-load 'info
-  (info-initialize)
-  (add-to-list 'Info-directory-list
-               "~/.emacs.d/lisp/magit/Documentation/"))
+;(with-eval-after-load 'info
+;  (info-initialize)
+;  (add-to-list 'Info-directory-list
+;               "~/.emacs.d/lisp/magit/Documentation/"))
 
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
@@ -243,6 +253,7 @@
 
 ;; JSX mode
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . rjsx-mode))
 (autoload 'rjsx-mode "rjsx-mode" "JSX mode" t)
 
 ;; Neo Tree
@@ -269,3 +280,7 @@
 ;; Feature mode
 (require 'feature-mode)
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+
+;; ReasonML mode
+(require 'reason-mode)
+(add-to-list 'auto-mode-alist '("\.re$" . reason-mode))

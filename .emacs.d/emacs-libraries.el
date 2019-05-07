@@ -3,7 +3,7 @@
 ;; Color themes
 (require 'emacs-color-themes)
 (if (display-graphic-p)
-    (load-theme 'gruvbox t)
+    (load-theme 'moe-dark t)
   (load-theme 'monokai t))
 
 ;; SrSpeedbar
@@ -80,6 +80,7 @@
         "*/.emacs.desktop*"
         "*/.nyc_output*"
         "*/node_modules/*"
+        "*/dry-run/*"
         "*/bower_components/*"
         "*/coverage/*"
         "*/karma_html/*"
@@ -112,7 +113,7 @@
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . js-mode))
 (add-to-list 'auto-mode-alist '("\\.dust\\'" . js2-mode))
 (setq js2-strict-inconsistent-return-warning nil)
@@ -213,12 +214,33 @@
 ;(require 'ghub)
 ;(add-to-list 'load-path "~/.emacs.d/lisp/magit/lisp")
 ;(require 'magit)
-
+(setq magit-commit-show-diff nil)
+(setq magit-revert-buffers 1)
+(setq magit-refresh-status-buffer nil)
+(setq vc-handled-backends nil)
 (setq git-commit-summary-max-length 70)
 ;(with-eval-after-load 'info
 ;  (info-initialize)
 ;  (add-to-list 'Info-directory-list
 ;               "~/.emacs.d/lisp/magit/Documentation/"))
+
+;; Show staged and unstaged changes, but nothing else
+;; https://github.com/magit/magit/wiki/Tips-and-Tricks#show-staged-and-unstaged-changes-but-nothing-else
+
+(define-derived-mode magit-staging-mode magit-status-mode "Magit staging"
+  "Mode for showing staged and unstaged changes."
+  :group 'magit-status)
+
+(defun magit-staging-refresh-buffer ()
+  (magit-insert-section (status)
+    (magit-insert-unstaged-changes)
+    (magit-insert-staged-changes)))
+
+(defun magit-staging ()
+  (interactive)
+  (magit-mode-setup #'magit-staging-mode))
+
+(global-set-key (kbd "M-t") 'magit-staging)
 
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
@@ -279,8 +301,8 @@
 
 ;; Feature mode
 (require 'feature-mode)
-(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+(add-to-list 'auto-mode-alist '("\\.feature$" . feature-mode))
 
 ;; ReasonML mode
 (require 'reason-mode)
-(add-to-list 'auto-mode-alist '("\.re$" . reason-mode))
+(add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))

@@ -21,11 +21,12 @@
 ;(global-set-key [s-down] 'windmove-down)
 (global-set-key [M-up] 'popout-directory)
 (global-set-key (kbd "M-f") 'open-in-firefox)
-(global-set-key (kbd "M-t") 'open-terminal-here)
+;(global-set-key (kbd "M-t") 'open-terminal-here)
 
 (global-set-key (kbd "C-k") 'ruthlessly-kill-line)
 (global-set-key (kbd "C-x w") 'toggle-truncate-lines)
-(global-set-key (kbd "C-x t") 'find-file-in-project)
+(global-set-key (kbd "C-x p") 'find-file-in-project)
+(global-set-key (kbd "C-x t") 'find-file-in-project-by-selected)
 (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
 (global-set-key (kbd "C-x C-d") 'fd-desktop-change-dir)
 (global-set-key (kbd "C-x M-b") 'ido-switch-buffer-other-window)
@@ -74,8 +75,7 @@
 
 ;; Magit
 (global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-M-g") 'magit-status)
-(global-set-key (kbd "M-t") 'magit-status)
+(global-set-key (kbd "C-x y") 'magit-show-refs)
 (global-set-key (kbd "C-x M-g") 'magit-dispatch-popup)
 (global-set-key (kbd "C-x M-m") 'magit-log-buffer-file)
 (global-set-key (kbd "C-x M-b") 'magit-blame)

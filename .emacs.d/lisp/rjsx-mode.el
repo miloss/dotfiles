@@ -34,6 +34,7 @@
 (require 'js2-mode)
 (eval-when-compile (require 'subr-x))
 (require 'newcomment)
+(require 'sgml-mode)
 
 (defgroup rjsx-mode nil
   "Support for JSX."
@@ -48,7 +49,7 @@ parsing supports the magic `rjsx-electric-lt' and
   :type 'integer)
 
 ;;;###autoload
-(define-derived-mode rjsx-mode js2-jsx-mode "RJSX"
+(define-derived-mode rjsx-mode js2-mode "RJSX"
   "Major mode for editing JSX files."
   :lighter ":RJSX"
   :group 'rjsx-mode
@@ -987,17 +988,14 @@ NEW-NAME is the name to give the tag."
 
 
 (defun rjsx-jump-opening-tag ()
-  "Goto opening tag of focused tab body"
+  "Go to opening tag of tag at point."
   (interactive)
-  (let* ((tag (rjsx--tag-at-point))
-         (closer (and tag (rjsx-node-closing-tag tag))))
-    (cond
-     ((null tag) (message "No JSX tag found at point"))
-     (t
-      (goto-char (+ 1 (js2-node-abs-pos tag)))))))
+  (let ((tag (rjsx--tag-at-point)))
+    (if (null tag) (message "No JSX tag found at point")
+      (goto-char (+ 1 (js2-node-abs-pos tag))))))
 
 (defun rjsx-jump-tag ()
-  "Switch between opening and closing tag of focused tab body"
+  "Switch between opening and closing tag of tag at point."
   (interactive)
   (let* ((tag (rjsx--tag-at-point))
          (closer (and tag (rjsx-node-closing-tag tag))))

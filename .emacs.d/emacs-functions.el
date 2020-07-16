@@ -31,8 +31,8 @@ emacs-how-to-delete-text-without-kill-ring"
 
 (defun new-emacs ()
   (interactive)
-  ;(shell-command "open -n -a /Applications/Emacs.app")
-  (shell-command "open -n -a /usr/local/Cellar/emacs-plus/25.2/Emacs.app"))
+  (shell-command "open -n -a /Applications/Emacs.app"))
+  ;(shell-command "open -n -a /usr/local/Cellar/emacs-plus/25.2/Emacs.app"))
 
 
 ;;; Session functions
@@ -65,9 +65,9 @@ emacs-how-to-delete-text-without-kill-ring"
 ;;; Windows
 
 (defun split-window-left ()
-  "Split the current window vertically 38/62 and moves to the right one."
+  "Split the current window vertically and moves to the right one."
   (interactive)
-  (let ((proportion (* 36 0.01)))
+  (let ((proportion (* 50 0.01)))
     (split-window-right (round (* proportion (window-width))))
     (other-window -1)))
 

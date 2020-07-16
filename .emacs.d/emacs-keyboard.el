@@ -7,8 +7,10 @@
 (global-set-key [f5] 'desktop-change-dir)
 (global-set-key [f6] 'session-save)
 (global-set-key [f7] 'desktop-clear-lock)
-;(global-set-key [f8] 'ffip-filelist-clear)
-;(global-set-key [f8] 'neotree-toggle)
+(global-set-key [f8] 'neotree-toggle)
+
+;(global-set-key [triple-wheel-left] 'my-previous-buffer)
+;(global-set-key [triple-wheel-right] 'my-next-buffer)
 
 (global-set-key (kbd "C-x M-n") 'new-emacs)
 (global-set-key (kbd "C-x M-r") 'rgrep)
@@ -42,6 +44,7 @@
 (global-set-key (kbd "C-x C-3") 'split-window-three-parts)
 (global-set-key (kbd "C-x C-g") 'split-window-three-parts-magit)
 (global-set-key (kbd "C-1") 'single-window)
+(global-set-key (kbd "C-2") 'split-window-left)
 (global-set-key (kbd "C-3") 'split-window-three-parts)
 (global-set-key (kbd "C-4") 'split-window-three-parts-magit)
 (global-set-key (kbd "C-5") 'split-window-multi)
@@ -49,6 +52,7 @@
 (global-set-key (kbd "M-}") 'enlarge-window-horizontally)
 (global-set-key (kbd "M-[") 'shrink-window)
 (global-set-key (kbd "M-]") 'enlarge-window)
+(global-set-key (kbd "M-?") nil)
 
 (when (display-graphic-p)
   (global-set-key (kbd "C-M-z") 'shell-in-current-frame)

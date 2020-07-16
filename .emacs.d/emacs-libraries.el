@@ -52,6 +52,7 @@
         "*.js"
         "*.jsx"
         "*.ts"
+        "*.tsx"
         "*.coffee"
         "*.ejs"
         "*.css"
@@ -72,7 +73,8 @@
         "*.eslintrc"
         "*.eslintrc.js*"
         "*.re*"
-        "*.json"))
+        "*.json"
+        "*.snap"))
 (setq ffip-prune-patterns
       '("*/.git/*"
         "*/.hooks/*"
@@ -86,9 +88,14 @@
         "*/karma_html/*"
         "*/dist/*"
         "*frontend/target/*"
+        "*target/webdist/*"
+        "*target/webdev/*"
         "*frontend/lexemes-database/*"
+        "*static/bundles/*"
         "*data/repo/*"
         "*data/html/*"
+        "*public/js/cosmos/*"
+        "*images/-/*"
         "*.min.css"
         "*.min.js"
         "*/.tmp/*"))
@@ -100,16 +107,27 @@
 (eval-after-load "grep"
   '(progn
      (add-to-list 'grep-find-ignored-files ".emacs.desktop")
+     (add-to-list 'grep-find-ignored-files ".eslintcache")
      (add-to-list 'grep-find-ignored-directories ".tmp")
+     (add-to-list 'grep-find-ignored-directories ".unrealsync")
      (add-to-list 'grep-find-ignored-directories "dist")
      (add-to-list 'grep-find-ignored-directories "coverage")
      (add-to-list 'grep-find-ignored-directories "karma_html")
      (add-to-list 'grep-find-ignored-directories "node_modules")
      (add-to-list 'grep-find-ignored-directories "external-projects")
      (add-to-list 'grep-find-ignored-directories "target/temp")
+     (add-to-list 'grep-find-ignored-directories "target/webdev")
+     (add-to-list 'grep-find-ignored-directories "target/webdist")
      (add-to-list 'grep-find-ignored-directories "frontend/target")
      (add-to-list 'grep-find-ignored-directories "frontend/lexemes-database")
-     (add-to-list 'grep-find-ignored-directories "frontend/bin/yarn")))
+     (add-to-list 'grep-find-ignored-directories "frontend/desktopweb/static")
+     (add-to-list 'grep-find-ignored-directories "data/repo")
+     (add-to-list 'grep-find-ignored-directories "data/html")
+     (add-to-list 'grep-find-ignored-directories "frontend/bin/yarn")
+     (add-to-list 'grep-find-ignored-directories "css/fonts")
+     (add-to-list 'grep-find-ignored-directories "js/vendors")
+     (add-to-list 'grep-find-ignored-directories "js/cosmos")
+     (add-to-list 'grep-find-ignored-directories "__sapper__")))
 
 ;; JavaScript mode
 (autoload 'js2-mode "js2-mode" nil t)
@@ -132,6 +150,8 @@
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
+(setq web-mode-markup-indent-offset 4)
 
 ;; Haskell mode
 ;(load "/usr/share/emacs24/site-lisp/haskell-mode/haskell-site-file")
@@ -139,12 +159,12 @@
 ;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 
 ;; Python mode
-(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
-(add-to-list 'load-path "~/.emacs.d/lisp/python-mode/")
-(setq py-install-directory "~/.emacs.d/lisp/python-mode/")
+;(setq abbrev-file-name "~/.emacs.d/.abbrev_defs")
+;(add-to-list 'load-path "~/.emacs.d/lisp/python-mode/")
+;(setq py-install-directory "~/.emacs.d/lisp/python-mode/")
 (autoload 'python-mode "python-mode" "Python Mode" t)
-(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-(add-to-list 'interpreter-mode-alist '("python" . python-mode))
+;(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+;(add-to-list 'interpreter-mode-alist '("python" . python-mode))
 (define-coding-system-alias 'UTF-8 'utf-8)
 
 ; idomenu
@@ -233,6 +253,7 @@
 
 (defun magit-staging-refresh-buffer ()
   (magit-insert-section (status)
+    (magit-insert-untracked-files)
     (magit-insert-unstaged-changes)
     (magit-insert-staged-changes)))
 
@@ -285,11 +306,11 @@
   "Open NeoTree using the git root."
   (interactive)
   (neotree-dir fd-desktop-path))
-(global-set-key [f8] 'neotree-project-dir)
 
 ;; TypeScript Mode
-(require 'tss)
+;(require 'tss)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
 ;(setq tss-popup-help-key "C-:")
 ;(setq tss-jump-to-definition-key "C->")
 ;(setq tss-implement-definition-key "C-c i")

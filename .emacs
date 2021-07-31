@@ -70,8 +70,8 @@
 (setq lazy-highlight-cleanup nil)
 (setq desktop-load-locked-desktop t)
 
-;(set-default-font "Monaco 13") ;; Font not available on Ubuntu
-(set-default-font "Ubuntu Mono 12")
+;(set-frame-font "Monaco 13") ;; Font not available on Ubuntu
+(set-frame-font "Ubuntu Mono 12")
 (setq text-scale-mode-step 1.04)
 
 (setq next-line-add-newlines nil)

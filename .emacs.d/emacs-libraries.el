@@ -300,16 +300,16 @@
 (autoload 'rjsx-mode "rjsx-mode" "JSX mode" t)
 
 ;; Neo Tree
-(add-to-list 'load-path "/Users/milospopovic/.emacs.d/lisp/neotree")
-(require 'neotree)
-(defun neotree-project-dir ()
-  "Open NeoTree using the git root."
-  (interactive)
-  (neotree-dir fd-desktop-path))
+;(add-to-list 'load-path "/Users/milospopovic/.emacs.d/lisp/neotree")
+;(require 'neotree)
+;(defun neotree-project-dir ()
+;  "Open NeoTree using the git root."
+;  (interactive)
+;  (neotree-dir fd-desktop-path))
 
 ;; TypeScript Mode
 ;(require 'tss)
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
 ;(setq tss-popup-help-key "C-:")
 ;(setq tss-jump-to-definition-key "C->")
@@ -327,3 +327,7 @@
 ;; ReasonML mode
 (require 'reason-mode)
 (add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))
+
+(defvar ivy-completing-read-handlers-alist nil)
+
+(require 'tramp)

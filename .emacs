@@ -70,8 +70,8 @@
 (setq lazy-highlight-cleanup nil)
 (setq desktop-load-locked-desktop t)
 
-;(set-frame-font "Monaco 13") ;; Font not available on Ubuntu
-(set-frame-font "Ubuntu Mono 12")
+(set-frame-font "Monaco 13") ;; Font not available on Ubuntu
+;(set-frame-font "Ubuntu Mono 12")
 (setq text-scale-mode-step 1.04)
 
 (setq next-line-add-newlines nil)
@@ -82,6 +82,7 @@
 (setq mouse-wheel-progressive-speed nil)
 (setq frame-title-format '("" fd-desktop-name " %f"))
 (set-frame-parameter (selected-frame) 'alpha '(100 100))
+(scroll-bar-mode -1)
 
 (setq
   backup-by-copying t

@@ -1,4 +1,4 @@
-export PATH=$HOME/local/bin:$HOME/bin:$PATH
+export PATH=/usr/local/bin:$HOME/local/bin:$HOME/bin:/opt/homebrew/bin:$PATH
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 

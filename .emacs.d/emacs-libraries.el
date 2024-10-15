@@ -301,11 +301,11 @@
 
 ;; Neo Tree
 ;(add-to-list 'load-path "/Users/milospopovic/.emacs.d/lisp/neotree")
-;(require 'neotree)
-;(defun neotree-project-dir ()
-;  "Open NeoTree using the git root."
-;  (interactive)
-;  (neotree-dir fd-desktop-path))
+(require 'neotree)
+(defun neotree-project-dir ()
+  "Open NeoTree using the git root."
+  (interactive)
+  (neotree-dir fd-desktop-path))
 
 ;; TypeScript Mode
 ;(require 'tss)
@@ -328,6 +328,9 @@
 (require 'reason-mode)
 (add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))
 
-(defvar ivy-completing-read-handlers-alist nil)
+;; Ivy autocompleting
+(require 'ivy)
 
+;; TRAMP
+(defvar ivy-completing-read-handlers-alist nil)
 (require 'tramp)

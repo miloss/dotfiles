@@ -1,4 +1,4 @@
-export PATH=/usr/local/bin:$HOME/local/bin:$HOME/bin:/opt/homebrew/bin:$PATH
+export PATH=/usr/local/bin:$HOME/work:$HOME/local/bin:$HOME/bin:/opt/homebrew/bin:$PATH
 export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
@@ -16,7 +16,7 @@ PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w \$\[\033[00m\] '
 
 # Aliases
 alias ls='ls -G --color=auto'
-alias la='ls -la'
+alias ll='ls -la'
 alias lt='ls -ltr'
 
 alias na='gnome-open .'

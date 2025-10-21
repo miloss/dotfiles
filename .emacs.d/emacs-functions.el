@@ -100,6 +100,11 @@ emacs-how-to-delete-text-without-kill-ring"
   (interactive)
   (other-window -1))
 
+(defun neotree-project-dir ()
+  "Open NeoTree using the git root."
+  (interactive)
+  (neotree-dir fd-desktop-path))
+
 (defun split-window-three-parts ()
   "Shows the Speedbar on the left and another window to the right"
   (interactive)

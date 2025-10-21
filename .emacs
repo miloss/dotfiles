@@ -29,16 +29,14 @@
  '(js-flat-functions t)
  '(js2-strict-missing-semi-warning nil)
  '(magit-rebase-arguments nil)
- '(package-selected-packages (quote (auto-complete magit)))
+ '(package-selected-packages
+   '(auto-complete cl-lib company counsel dash editorconfig ejc-sql f
+                   find-file-in-project go-mode ivy-avy ivy-hydra
+                   jsonrpc magit php-mode swiper))
  '(safe-local-variable-values
-   (quote
-    ((eval when
-           (fboundp
-            (quote rainbow-mode))
-           (rainbow-mode 1))
-     (haskell-process-use-ghci . t)
-     (haskell-indent-spaces . 4)
-     (lexical-binding . t))))
+   '((eval when (fboundp 'rainbow-mode) (rainbow-mode 1))
+     (haskell-process-use-ghci . t) (haskell-indent-spaces . 4)
+     (lexical-binding . t)))
  '(tool-bar-mode nil))
 
 (require 'package)
@@ -82,6 +80,7 @@
 (setq mouse-wheel-progressive-speed nil)
 (setq frame-title-format '("" fd-desktop-name " %f"))
 (set-frame-parameter (selected-frame) 'alpha '(100 100))
+(set-frame-parameter nil 'ns-appearance 'dark)
 (scroll-bar-mode -1)
 
 (setq

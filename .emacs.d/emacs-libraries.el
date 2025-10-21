@@ -7,9 +7,9 @@
   (load-theme 'monokai t))
 
 ;; SrSpeedbar
-(require 'sr-speedbar)
-(speedbar-add-supported-extension ".hs")
-(setq sr-speedbar-skip-other-window-p t)
+;(require 'sr-speedbar)
+;(speedbar-add-supported-extension ".hs")
+;(setq sr-speedbar-skip-other-window-p t)
 
 (defun select-next-window ()
   (other-window 1))
@@ -26,13 +26,12 @@
 (smart-tabs-mode-enable)
 
 ;; Auto-complete.el
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/auto-complete/ac-dict")
-(setq ac-quick-help-delay 0.2)
-(setq ac-auto-show-menu 0.2)
-(ac-config-default)
-
-(add-to-list 'ac-modes 'rjsx-mode)
+;(require 'auto-complete-config)
+;(add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/auto-complete/ac-dict")
+;(setq ac-quick-help-delay 0.2)
+;(setq ac-auto-show-menu 0.8)
+;(ac-config-default)
+;(add-to-list 'ac-modes 'rjsx-mode)
 
 ;; Ido mode
 (ido-mode t)
@@ -98,6 +97,10 @@
         "*images/-/*"
         "*.min.css"
         "*.min.js"
+        "*/.next/*"
+        "*/.parcel-cache/*"
+        "*/.dist/*"
+        "*/dist/*"
         "*/.tmp/*"))
 (setq ffip-match-path-instead-of-filename t)
 ;(setq ffip-project-root "~/projs/PROJECT_DIR")
@@ -113,6 +116,9 @@
      (add-to-list 'grep-find-ignored-directories "dist")
      (add-to-list 'grep-find-ignored-directories "coverage")
      (add-to-list 'grep-find-ignored-directories "karma_html")
+     (add-to-list 'grep-find-ignored-directories ".next")
+     (add-to-list 'grep-find-ignored-directories ".dist")
+     (add-to-list 'grep-find-ignored-directories ".parcel-cache")
      (add-to-list 'grep-find-ignored-directories "node_modules")
      (add-to-list 'grep-find-ignored-directories "external-projects")
      (add-to-list 'grep-find-ignored-directories "target/temp")
@@ -127,6 +133,7 @@
      (add-to-list 'grep-find-ignored-directories "css/fonts")
      (add-to-list 'grep-find-ignored-directories "js/vendors")
      (add-to-list 'grep-find-ignored-directories "js/cosmos")
+     (add-to-list 'grep-find-ignored-directories "dist")
      (add-to-list 'grep-find-ignored-directories "__sapper__")))
 
 ;; JavaScript mode
@@ -171,7 +178,7 @@
 (autoload 'idomenu "idomenu" nil t)
 
 ;; PHP mode
-(autoload 'php-mode "php-mode" nil t)
+;(autoload 'php-mode "php-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.php\\'" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . php-mode))
 
@@ -217,10 +224,10 @@
           (lambda () (setq blink-matching-paren t)))
 
 ;; Jade mode
-(require 'sws-mode)
-(autoload 'jade-mode "jade-mode" "Jade Mode" t)
-(add-to-list 'auto-mode-alist '("\\.jade\\'" . jade-mode))
-(add-to-list 'auto-mode-alist '("\\.pug\\'" . jade-mode))
+;(require 'sws-mode)
+;(autoload 'jade-mode "jade-mode" "Jade Mode" t)
+;(add-to-list 'auto-mode-alist '("\\.jade\\'" . jade-mode))
+;(add-to-list 'auto-mode-alist '("\\.pug\\'" . jade-mode))
 
 ;; Dockerfile mode
 (require 'dockerfile-mode)
@@ -261,7 +268,8 @@
   (interactive)
   (magit-mode-setup #'magit-staging-mode))
 
-(global-set-key (kbd "M-t") 'magit-staging)
+;(global-set-key (kbd "M-t") 'magit-staging)
+(global-set-key (kbd "M-t") 'magit-status-quick)
 
 ;; Markdown mode
 (autoload 'markdown-mode "markdown-mode" "Major mode for editing Markdown files" t)
@@ -273,8 +281,8 @@
 (require 'find-desktop)
 
 ;; Robot mode
-(autoload 'robot-mode "robot-mode.el" "Robot Framework text mode" t)
-(add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
+;(autoload 'robot-mode "robot-mode.el" "Robot Framework text mode" t)
+;(add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
 
 ;; SCSS mode
 (autoload 'scss-mode "scss-mode")
@@ -300,12 +308,8 @@
 (autoload 'rjsx-mode "rjsx-mode" "JSX mode" t)
 
 ;; Neo Tree
-;(add-to-list 'load-path "/Users/milospopovic/.emacs.d/lisp/neotree")
-(require 'neotree)
-(defun neotree-project-dir ()
-  "Open NeoTree using the git root."
-  (interactive)
-  (neotree-dir fd-desktop-path))
+;(add-to-list 'load-path "/Users/milos.popovic/.emacs.d/lisp/neotree")
+;(require 'neotree)
 
 ;; TypeScript Mode
 ;(require 'tss)
@@ -321,16 +325,27 @@
 (add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
 
 ;; Feature mode
-(require 'feature-mode)
-(add-to-list 'auto-mode-alist '("\\.feature$" . feature-mode))
+;(require 'feature-mode)
+;(add-to-list 'auto-mode-alist '("\\.feature$" . feature-mode))
+
+;; Go mode
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
 
 ;; ReasonML mode
-(require 'reason-mode)
-(add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))
+;(require 'reason-mode)
+;(add-to-list 'auto-mode-alist '("\\.re$" . reason-mode))
 
-;; Ivy autocompleting
 (require 'ivy)
-
-;; TRAMP
 (defvar ivy-completing-read-handlers-alist nil)
+
 (require 'tramp)
+
+;; Company mode
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Copilot
+;(require 'editorconfig)
+;(require 'copilot)
+;(add-hook 'prog-mode-hook 'copilot-mode)
+;(define-key copilot-completion-map (kbd "M-<tab>") 'copilot-accept-completion)
+;(define-key copilot-completion-map (kbd "M-TAB") 'copilot-accept-completion)
